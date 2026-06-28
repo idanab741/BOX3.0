@@ -24,6 +24,22 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 .screen{flex:1;overflow-y:auto;padding-bottom:88px}
 .screen::-webkit-scrollbar{display:none}
 
+/* AUTH SCREEN */
+.auth-screen{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;min-height:100vh}
+.auth-logo{font-size:48px;margin-bottom:8px}
+.auth-title{font-size:28px;font-weight:800;color:var(--primary);margin-bottom:4px;letter-spacing:-1px}
+.auth-sub{font-size:14px;color:var(--text2);margin-bottom:32px}
+.auth-card{background:var(--card);border-radius:20px;border:1px solid var(--border);box-shadow:0 4px 24px rgba(0,0,0,.1);padding:24px;width:100%;max-width:360px}
+.auth-tab-row{display:flex;background:var(--bg);border-radius:12px;padding:4px;margin-bottom:20px}
+.auth-tab{flex:1;padding:9px;border-radius:9px;font-size:13px;font-weight:700;text-align:center;cursor:pointer;border:none;font-family:inherit;color:var(--text2);background:transparent;transition:all .2s}
+.auth-tab.active{background:var(--primary);color:#fff}
+.auth-label{font-size:12px;color:var(--text2);font-weight:600;margin-bottom:6px;display:block}
+.auth-input{width:100%;background:var(--bg);border:1.5px solid var(--border2);border-radius:12px;padding:12px 14px;font-size:15px;font-family:inherit;color:var(--text);outline:none;direction:rtl;margin-bottom:12px;-webkit-appearance:none}
+.auth-input:focus{border-color:var(--primary)}
+.auth-btn{width:100%;background:linear-gradient(135deg,var(--primary),#7c3aed);color:#fff;border:none;border-radius:12px;padding:14px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;margin-top:4px}
+.auth-error{background:var(--red-bg);border:1px solid #fca5a5;border-radius:10px;padding:10px 14px;font-size:12px;color:var(--red);margin-bottom:12px;display:none}
+.auth-user-bar{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.15);border-radius:12px;padding:8px 12px;margin-top:8px;cursor:pointer}
+
 /* TOPBAR */
 .topbar{background:linear-gradient(160deg,#1e1b4b,#312e81 55%,#4338ca);padding:16px 18px 22px;color:#fff}
 .topbar-row{display:flex;justify-content:space-between;align-items:center}
@@ -193,25 +209,59 @@ input[type=range]{width:100%;accent-color:var(--primary)}
 .toast{position:fixed;top:20px;left:50%;transform:translateX(-50%);background:var(--green);color:#fff;padding:10px 20px;border-radius:20px;font-size:13px;font-weight:700;z-index:999;opacity:0;transition:opacity .3s;pointer-events:none;white-space:nowrap;box-shadow:0 4px 14px rgba(0,0,0,.2)}
 .toast.show{opacity:1}
 .toast.err{background:var(--red)}
+
+/* LOADER */
+.loader-overlay{position:fixed;inset:0;background:rgba(255,255,255,.85);z-index:500;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px}
+.loader-spinner{width:40px;height:40px;border:3px solid var(--border);border-top-color:var(--primary);border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
 </style>
 </head>
 <body>
-<div class="app">
-  <div class="screen" id="s-dash" style="display:block"></div>
-  <div class="screen" id="s-exp" style="display:none"></div>
-  <div class="screen" id="s-inc" style="display:none"></div>
-  <div class="screen" id="s-budget" style="display:none"></div>
-  <div class="screen" id="s-track" style="display:none"></div>
-  <div class="screen" id="s-pension" style="display:none"></div>
+<div class="app" id="app">
+  <!-- AUTH -->
+  <div id="auth-screen" class="auth-screen">
+    <div class="auth-logo">📦</div>
+    <div class="auth-title">BOX3.0</div>
+    <div class="auth-sub">ניהול כספים משפחתי</div>
+    <div class="auth-card">
+      <div class="auth-tab-row">
+        <button class="auth-tab active" id="tab-login" onclick="switchAuthTab('login')">כניסה</button>
+        <button class="auth-tab" id="tab-register" onclick="switchAuthTab('register')">הרשמה</button>
+      </div>
+      <div id="auth-error" class="auth-error"></div>
+      <label class="auth-label">אימייל</label>
+      <input class="auth-input" id="auth-email" type="email" placeholder="mail@example.com" autocomplete="email">
+      <label class="auth-label">סיסמה</label>
+      <input class="auth-input" id="auth-pass" type="password" placeholder="לפחות 6 תווים" autocomplete="current-password">
+      <div id="auth-name-wrap" style="display:none">
+        <label class="auth-label">שם המשפחה / הזוג</label>
+        <input class="auth-input" id="auth-name" type="text" placeholder="משפחת כהן, נועה ויובל...">
+      </div>
+      <button class="auth-btn" id="auth-submit-btn" onclick="doAuth()">כניסה</button>
+      <div style="margin-top:14px;font-size:11px;color:var(--text3);text-align:center;line-height:1.6">
+        💡 בני זוג ומשפחה — הירשמו עם <strong>אותו אימייל וסיסמה</strong><br>כדי לשתף את אותם הנתונים
+      </div>
+    </div>
+  </div>
 
-  <nav class="navbar">
-    <div class="nav-item active" onclick="nav('dash',this)"><div class="ni">🏠</div><div class="nl">ראשי</div></div>
-    <div class="nav-item" onclick="nav('exp',this)"><div class="ni">💸</div><div class="nl">הוצאות</div></div>
-    <div class="nav-item" onclick="nav('inc',this)"><div class="ni">💰</div><div class="nl">הכנסות</div></div>
-    <div class="nav-item" onclick="nav('budget',this)"><div class="ni">🎯</div><div class="nl">תקציב</div></div>
-    <div class="nav-item" onclick="nav('track',this)"><div class="ni">📈</div><div class="nl">מעקב</div></div>
-    <div class="nav-item" onclick="nav('pension',this)"><div class="ni">🏛️</div><div class="nl">פנסיה</div></div>
-  </nav>
+  <!-- MAIN APP (hidden until logged in) -->
+  <div id="main-app" style="display:none;flex:1;flex-direction:column">
+    <div class="screen" id="s-dash" style="display:block"></div>
+    <div class="screen" id="s-exp" style="display:none"></div>
+    <div class="screen" id="s-inc" style="display:none"></div>
+    <div class="screen" id="s-budget" style="display:none"></div>
+    <div class="screen" id="s-track" style="display:none"></div>
+    <div class="screen" id="s-pension" style="display:none"></div>
+
+    <nav class="navbar">
+      <div class="nav-item active" onclick="nav('dash',this)"><div class="ni">🏠</div><div class="nl">ראשי</div></div>
+      <div class="nav-item" onclick="nav('exp',this)"><div class="ni">💸</div><div class="nl">הוצאות</div></div>
+      <div class="nav-item" onclick="nav('inc',this)"><div class="ni">💰</div><div class="nl">הכנסות</div></div>
+      <div class="nav-item" onclick="nav('budget',this)"><div class="ni">🎯</div><div class="nl">תקציב</div></div>
+      <div class="nav-item" onclick="nav('track',this)"><div class="ni">📈</div><div class="nl">מעקב</div></div>
+      <div class="nav-item" onclick="nav('pension',this)"><div class="ni">🏛️</div><div class="nl">פנסיה</div></div>
+    </nav>
+  </div>
 
   <!-- EXPENSE MODAL -->
   <div class="modal-overlay" id="m-exp">
@@ -363,9 +413,170 @@ input[type=range]{width:100%;accent-color:var(--primary)}
   </div>
 
   <div class="toast" id="toast"></div>
+  <div class="loader-overlay" id="loader" style="display:none">
+    <div class="loader-spinner"></div>
+    <div style="font-size:13px;color:var(--text2);font-weight:600">טוען נתונים...</div>
+  </div>
 </div>
 
+<!-- Firebase SDK -->
+<script type="module">
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged }
+  from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
+import { getFirestore, doc, getDoc, setDoc, updateDoc, onSnapshot }
+  from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+
+// ============================================================
+// 🔧 הכנס כאן את ה-firebaseConfig שלך מ-Firebase Console
+// ============================================================
+const firebaseConfig = {
+  apiKey: "AIzaSyD4qIs4VzS5CZSAaFeZL-q0cXyt9TxfMdo",
+  authDomain: "box3-0.firebaseapp.com",
+  projectId: "box3-0",
+  storageBucket: "box3-0.firebasestorage.app",
+  messagingSenderId: "702274544895",
+  appId: "1:702274544895:web:e42f6237c30b95462e98ca",
+  measurementId: "G-E73QBL8JRE"
+};
+// ============================================================
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+let currentUID = null;
+let unsubscribe = null;
+
+// ── AUTH STATE ──────────────────────────────────────────────
+onAuthStateChanged(auth, user => {
+  if (user) {
+    currentUID = user.uid;
+    document.getElementById('auth-screen').style.display = 'none';
+    document.getElementById('main-app').style.display = 'flex';
+    listenToData(user.uid);
+  } else {
+    currentUID = null;
+    if (unsubscribe) { unsubscribe(); unsubscribe = null; }
+    document.getElementById('auth-screen').style.display = 'flex';
+    document.getElementById('main-app').style.display = 'none';
+  }
+});
+
+// ── AUTH FUNCTIONS ─────────────────────────────────────────
+window.switchAuthTab = function(tab) {
+  document.getElementById('tab-login').classList.toggle('active', tab==='login');
+  document.getElementById('tab-register').classList.toggle('active', tab==='register');
+  document.getElementById('auth-name-wrap').style.display = tab==='register'?'block':'none';
+  document.getElementById('auth-submit-btn').textContent = tab==='register'?'הרשמה':'כניסה';
+  document.getElementById('auth-error').style.display = 'none';
+  window._authTab = tab;
+};
+window._authTab = 'login';
+
+window.doAuth = async function() {
+  const email = document.getElementById('auth-email').value.trim();
+  const pass  = document.getElementById('auth-pass').value;
+  const errEl = document.getElementById('auth-error');
+  errEl.style.display = 'none';
+  if (!email || !pass) { showErr('נא למלא אימייל וסיסמה'); return; }
+  try {
+    showLoader(true);
+    if (window._authTab === 'register') {
+      const name = document.getElementById('auth-name').value.trim() || 'המשפחה שלנו';
+      const cred = await createUserWithEmailAndPassword(auth, email, pass);
+      // init empty doc for new user
+      await setDoc(doc(db,'users',cred.user.uid), {
+        familyName: name,
+        txns:[], incomes:[], budgets: CATS.map(c=>({n:c.n,budget:0})),
+        goals:[], debts:[], funds:[], insurances:[]
+      });
+    } else {
+      await signInWithEmailAndPassword(auth, email, pass);
+    }
+  } catch(e) {
+    showLoader(false);
+    const msgs = {
+      'auth/email-already-in-use': 'האימייל כבר קיים. נסה להתחבר במקום.',
+      'auth/invalid-email': 'כתובת אימייל לא תקינה',
+      'auth/weak-password': 'הסיסמה חלשה מדי (לפחות 6 תווים)',
+      'auth/invalid-credential': 'אימייל או סיסמה שגויים',
+      'auth/user-not-found': 'משתמש לא קיים',
+      'auth/wrong-password': 'סיסמה שגויה',
+    };
+    showErr(msgs[e.code] || 'שגיאה: '+e.message);
+  }
+};
+
+function showErr(msg) {
+  const el = document.getElementById('auth-error');
+  el.textContent = msg;
+  el.style.display = 'block';
+}
+
+// ── REAL-TIME DATA LISTENER ────────────────────────────────
+function listenToData(uid) {
+  showLoader(true);
+  unsubscribe = onSnapshot(doc(db,'users',uid), snap => {
+    if (!snap.exists()) return;
+    const d = snap.data();
+    txns        = d.txns        || [];
+    incomes     = d.incomes     || [];
+    budgets     = d.budgets     || CATS.map(c=>({n:c.n,budget:0}));
+    goals       = d.goals       || [];
+    debts       = d.debts       || [];
+    funds       = d.funds       || [];
+    insurances  = d.insurances  || [];
+    showLoader(false);
+    // re-render current screen
+    const active = document.querySelector('.screen[style*="block"]');
+    if(active) {
+      const id = active.id.replace('s-','');
+      ({dash:buildDash,exp:buildExp,inc:buildIncomesScreen,budget:buildBudget,track:buildTrack,pension:buildPension})[id]?.();
+    }
+  }, err => {
+    showLoader(false);
+    console.error(err);
+  });
+}
+
+// ── SAVE TO FIRESTORE ──────────────────────────────────────
+async function saveToCloud(data) {
+  if (!currentUID) return;
+  try {
+    await updateDoc(doc(db,'users',currentUID), data);
+  } catch(e) {
+    // if doc doesn't exist yet, create it
+    await setDoc(doc(db,'users',currentUID), {
+      txns, incomes, budgets, goals, debts, funds, insurances, ...data
+    });
+  }
+}
+
+// Replace sv() to save to Firestore
+window.sv = async function(key, val) {
+  await saveToCloud({ [key]: val });
+};
+
+window.signOutUser = async function() {
+  if (!confirm('להתנתק?')) return;
+  await signOut(auth);
+};
+
+function showLoader(show) {
+  document.getElementById('loader').style.display = show ? 'flex' : 'none';
+}
+
+// kick off
+buildDash();
+
+</script>
+
 <script>
+// ============================================================
+// כל הלוגיקה של האפליקציה (זהה למקור, ללא localStorage)
+// ============================================================
+
 const CATS=[
   {n:'מזון',ic:'🛒',c:'#00916e',bg:'#e8faf6'},{n:'רכב',ic:'🚗',c:'#0969da',bg:'#e8f4fd'},
   {n:'בילוי',ic:'🍕',c:'#c0392b',bg:'#fef0ec'},{n:'בריאות',ic:'💊',c:'#7c3aed',bg:'#f0eeff'},
@@ -381,15 +592,9 @@ const FUND_BG={'קרן פנסיה':'#e8f4fd','קרן השתלמות':'#e8faf6','
 const INS_IC={'ביטוח חיים':'❤️','ביטוח בריאות':'🏥','ביטוח סיעוד':'🦽','ביטוח דירה':'🏠','ביטוח רכב':'🚗','אחר':'📋'};
 const INS_BG={'ביטוח חיים':'#fef0ec','ביטוח בריאות':'#e8faf6','ביטוח סיעוד':'#f0eeff','ביטוח דירה':'#fef9e7','ביטוח רכב':'#e8f4fd','אחר':'#f4f4f8'};
 
-function ld(k,d){try{return JSON.parse(localStorage.getItem(k))||d}catch{return d}}
-function sv(k,v){localStorage.setItem(k,JSON.stringify(v))}
-let txns=ld('txns',[]);
-let incomes=ld('incomes',[]);
-let budgets=ld('budgets',CATS.map(c=>({n:c.n,budget:0})));
-let goals=ld('goals',[]);
-let debts=ld('debts',[]);
-let funds=ld('funds',[]);
-let insurances=ld('insurances',[]);
+// Data arrays (populated by Firestore listener)
+let txns=[], incomes=[], budgets=CATS.map(c=>({n:c.n,budget:0}));
+let goals=[], debts=[], funds=[], insurances=[];
 
 function nav(name,el){
   document.querySelectorAll('.screen').forEach(s=>s.style.display='none');
@@ -429,18 +634,20 @@ CATS.forEach(c=>{
   cgEl.appendChild(d);
 });
 
-function saveExp(){
+async function saveExp(){
   const amt=parseFloat(expAmt);
   const name=document.getElementById('exp-name').value.trim();
   if(!amt||amt<=0)return toast('הכנס סכום',1);
   if(!name)return toast('הכנס שם',1);
   const cat=CATS.find(c=>c.n===selCat)||CATS[0];
   txns.unshift({id:Date.now(),name,amt,cat:cat.n,ic:cat.ic,bg:cat.bg,c:cat.c,src:document.getElementById('exp-src').value,date:new Date().toLocaleDateString('he-IL')});
-  sv('txns',txns);expAmt='';
+  await sv('txns',txns);
+  expAmt='';
   document.getElementById('exp-num').textContent='0';
   document.getElementById('exp-name').value='';
   closeM('m-exp');buildDash();toast('הוצאה נשמרה ✓');
 }
+
 let editIncId=null;
 function openIncM(id){
   editIncId=id;
@@ -452,34 +659,27 @@ function openIncM(id){
   document.getElementById('inc-del').style.display=inc?'block':'none';
   openM('m-inc');
 }
-function saveInc(){
+async function saveInc(){
   const amt=parseFloat(document.getElementById('inc-amt').value);
   if(!amt||amt<=0)return toast('הכנס סכום',1);
   const src=document.getElementById('inc-src').value.trim()||'הכנסה';
   const date=document.getElementById('inc-date').value.trim()||new Date().toLocaleDateString('he-IL');
-  if(editIncId){
-    const i=incomes.findIndex(x=>x.id===editIncId);
-    if(i>=0)incomes[i]={...incomes[i],amt,src,date};
-  } else {
-    incomes.unshift({id:Date.now(),amt,src,date});
-  }
-  sv('incomes',incomes);
-  document.getElementById('inc-amt').value='';
-  document.getElementById('inc-src').value='';
-  document.getElementById('inc-date').value='';
+  if(editIncId){const i=incomes.findIndex(x=>x.id===editIncId);if(i>=0)incomes[i]={...incomes[i],amt,src,date}}
+  else{incomes.unshift({id:Date.now(),amt,src,date})}
+  await sv('incomes',incomes);
+  document.getElementById('inc-amt').value='';document.getElementById('inc-src').value='';document.getElementById('inc-date').value='';
   closeM('m-inc');buildDash();
   if(document.getElementById('s-inc').style.display!=='none')buildIncomesScreen();
   toast(editIncId?'הכנסה עודכנה ✓':'הכנסה נשמרה ✓');
 }
-function deleteInc(){
+async function deleteInc(){
   if(!confirm('למחוק הכנסה זו?'))return;
   incomes=incomes.filter(x=>x.id!==editIncId);
-  sv('incomes',incomes);closeM('m-inc');buildDash();
+  await sv('incomes',incomes);closeM('m-inc');buildDash();
   if(document.getElementById('s-inc').style.display!=='none')buildIncomesScreen();
   toast('נמחק ✓');
 }
 
-// INCOMES SCREEN
 function buildIncomesScreen(){
   const el=document.getElementById('s-inc');
   const total=incomes.reduce((s,i)=>s+i.amt,0);
@@ -490,7 +690,10 @@ function buildIncomesScreen(){
   <div class="topbar">
     <div class="topbar-row">
       <div style="font-size:17px;font-weight:700">הכנסות</div>
-      <div style="font-size:13px;opacity:.8">${total>0?'₪'+total.toLocaleString():''}</div>
+      <div style="font-size:13px;opacity:.8;display:flex;align-items:center;gap:8px">
+        ${total>0?'₪'+total.toLocaleString():''}
+        <span onclick="signOutUser()" style="font-size:11px;opacity:.7;cursor:pointer;background:rgba(255,255,255,.15);padding:4px 10px;border-radius:8px">יציאה</span>
+      </div>
     </div>
   </div>
   <div style="padding:14px">
@@ -504,10 +707,7 @@ function buildIncomesScreen(){
     <div class="card">
       ${incomes.map(i=>`<div class="txn">
         <div class="txn-ic" style="background:#e8faf6">💰</div>
-        <div style="flex:1">
-          <div class="txn-name">${i.src}</div>
-          <div class="txn-sub">${i.date}</div>
-        </div>
+        <div style="flex:1"><div class="txn-name">${i.src}</div><div class="txn-sub">${i.date}</div></div>
         <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px">
           <div class="txn-amt" style="color:var(--green)">+₪${i.amt.toLocaleString()}</div>
           <div onclick="openIncM(${i.id})" style="font-size:10px;color:var(--primary);cursor:pointer;font-weight:600">עריכה / מחיקה</div>
@@ -519,7 +719,6 @@ function buildIncomesScreen(){
   </div>`;
 }
 
-// DASHBOARD
 function buildDash(){
   const el=document.getElementById('s-dash');
   const now=new Date();const m=now.getMonth();const y=now.getFullYear();
@@ -543,7 +742,10 @@ function buildDash(){
   <div class="topbar">
     <div class="topbar-row" style="margin-bottom:6px">
       <div><div style="font-size:12px;opacity:.65">BOX3.0</div><div style="font-size:19px;font-weight:800">${MONTHS[m]} ${y} 👋</div></div>
-      <div style="text-align:left;font-size:11px;opacity:.6">יום ${now.getDate()} · נשאר ${daysLeft} ימים</div>
+      <div style="display:flex;align-items:center;gap:8px">
+        <div style="text-align:left;font-size:11px;opacity:.6">יום ${now.getDate()} · נשאר ${daysLeft} ימים</div>
+        <span onclick="signOutUser()" style="font-size:11px;cursor:pointer;background:rgba(255,255,255,.15);padding:4px 10px;border-radius:8px;white-space:nowrap">יציאה</span>
+      </div>
     </div>
   </div>
 
@@ -594,7 +796,6 @@ function buildDash(){
   <div style="padding:0 14px 14px"><button class="fab" onclick="openM('m-exp')">+ הוסף הוצאה</button></div>`;
 }
 
-// EXPENSES
 let fCat='הכל';
 function buildExp(){
   const el=document.getElementById('s-exp');
@@ -618,9 +819,8 @@ function buildExp(){
   </div>`;
 }
 function searchExp(q){document.querySelectorAll('#exp-list .txn').forEach(t=>{t.style.display=(!q||t.dataset.name.includes(q.toLowerCase()))?'flex':'none'})}
-function delTxn(id){if(!confirm('למחוק?'))return;txns=txns.filter(t=>t.id!==id);sv('txns',txns);buildExp();buildDash();toast('נמחק ✓')}
+async function delTxn(id){if(!confirm('למחוק?'))return;txns=txns.filter(t=>t.id!==id);await sv('txns',txns);buildExp();buildDash();toast('נמחק ✓')}
 
-// BUDGET
 let editBCat=null;
 function buildBudget(){
   const el=document.getElementById('s-budget');
@@ -662,16 +862,11 @@ function buildBudget(){
   </div>`;
 }
 function openBM(n,cur){editBCat=n;document.getElementById('bm-title').textContent='תקציב — '+n;document.getElementById('bm-amt').value=cur||'';openM('m-budget')}
-function saveBudget(){const v=parseFloat(document.getElementById('bm-amt').value)||0;const i=budgets.findIndex(b=>b.n===editBCat);if(i>=0)budgets[i].budget=v;sv('budgets',budgets);closeM('m-budget');buildBudget();toast('תקציב עודכן ✓')}
+async function saveBudget(){const v=parseFloat(document.getElementById('bm-amt').value)||0;const i=budgets.findIndex(b=>b.n===editBCat);if(i>=0)budgets[i].budget=v;await sv('budgets',budgets);closeM('m-budget');buildBudget();toast('תקציב עודכן ✓')}
 
-// TRACK (Goals + Debts + Reports)
 let trackTab='goals';let editGoalId=null;let editDebtId=null;
 function buildTrack(){
   const el=document.getElementById('s-track');
-  const totGoalSaved=goals.reduce((s,g)=>s+(parseFloat(g.saved)||0),0);
-  const totDebt=debts.reduce((s,d)=>s+(parseFloat(d.remain)||0),0);
-  const totE=txns.reduce((s,t)=>s+t.amt,0);
-  const totI=incomes.reduce((s,t)=>s+t.amt,0);
   el.innerHTML=`
   <div class="topbar"><div class="topbar-row"><div style="font-size:17px;font-weight:700">מעקב פיננסי</div></div></div>
   <div style="padding:14px">
@@ -690,12 +885,9 @@ function renderTrackTab(){
   if(trackTab==='goals'){
     el.innerHTML=`
     ${goals.length?goals.map(g=>{
-      const target=parseFloat(g.target)||0;
-      const saved=parseFloat(g.saved)||0;
-      const monthly=parseFloat(g.monthly)||0;
+      const target=parseFloat(g.target)||0,saved=parseFloat(g.saved)||0,monthly=parseFloat(g.monthly)||0;
       const pct=target>0?Math.min(Math.round(saved/target*100),100):0;
-      const remain=target-saved;
-      const months=monthly>0?Math.ceil(remain/monthly):null;
+      const remain=target-saved;const months=monthly>0?Math.ceil(remain/monthly):null;
       return`<div class="goal-card" onclick="openGoalM(${g.id})">
         <div class="goal-top">
           <div><div class="goal-name">${g.name}</div><div style="font-size:11px;color:var(--text2);margin-top:2px">${monthly>0?'₪'+monthly.toLocaleString()+'/חודש':''}</div></div>
@@ -720,9 +912,7 @@ function renderTrackTab(){
       </div>
     </div>`:''}
     ${debts.length?debts.map(d=>{
-      const total=parseFloat(d.total)||0;
-      const remain=parseFloat(d.remain)||0;
-      const monthly=parseFloat(d.monthly)||0;
+      const total=parseFloat(d.total)||0,remain=parseFloat(d.remain)||0,monthly=parseFloat(d.monthly)||0;
       const pct=total>0?Math.round((total-remain)/total*100):0;
       const months=monthly>0?Math.ceil(remain/monthly):null;
       return`<div class="debt-card" onclick="openDebtM(${d.id})">
@@ -746,9 +936,9 @@ function renderTrackTab(){
     const months=[];
     for(let i=5;i>=0;i--){const d=new Date(now.getFullYear(),now.getMonth()-i,1);months.push({m:d.getMonth(),y:d.getFullYear(),label:MONTHS[d.getMonth()]})}
     const md=months.map(({m,y,label})=>{
-      const mt=txns.filter(t=>{const d=new Date(t.id);return d.getMonth()===m&&d.getFullYear()===y});
-      const mi=incomes.filter(t=>{const d=new Date(t.id);return d.getMonth()===m&&d.getFullYear()===y});
-      return{label,exp:mt.reduce((s,t)=>s+t.amt,0),inc:mi.reduce((s,t)=>s+t.amt,0)};
+      const mt2=txns.filter(t=>{const d=new Date(t.id);return d.getMonth()===m&&d.getFullYear()===y});
+      const mi2=incomes.filter(t=>{const d=new Date(t.id);return d.getMonth()===m&&d.getFullYear()===y});
+      return{label,exp:mt2.reduce((s,t)=>s+t.amt,0),inc:mi2.reduce((s,t)=>s+t.amt,0)};
     });
     const maxV=Math.max(...md.flatMap(d=>[d.exp,d.inc]),1);
     el.innerHTML=`
@@ -773,47 +963,35 @@ function renderTrackTab(){
 }
 
 function openGoalM(id){
-  editGoalId=id;
-  const g=id?goals.find(x=>x.id===id):null;
+  editGoalId=id;const g=id?goals.find(x=>x.id===id):null;
   document.getElementById('gm-title').textContent=g?'עריכת יעד':'יעד חיסכון חדש';
-  document.getElementById('gm-name').value=g?g.name:'';
-  document.getElementById('gm-target').value=g?g.target:'';
-  document.getElementById('gm-saved').value=g?g.saved:'';
-  document.getElementById('gm-monthly').value=g?g.monthly:'';
-  document.getElementById('gm-del').style.display=g?'block':'none';
-  openM('m-goal');
+  document.getElementById('gm-name').value=g?g.name:'';document.getElementById('gm-target').value=g?g.target:'';
+  document.getElementById('gm-saved').value=g?g.saved:'';document.getElementById('gm-monthly').value=g?g.monthly:'';
+  document.getElementById('gm-del').style.display=g?'block':'none';openM('m-goal');
 }
-function saveGoal(){
-  const name=document.getElementById('gm-name').value.trim();
-  if(!name)return toast('הכנס שם',1);
+async function saveGoal(){
+  const name=document.getElementById('gm-name').value.trim();if(!name)return toast('הכנס שם',1);
   const goal={id:editGoalId||Date.now(),name,target:document.getElementById('gm-target').value,saved:document.getElementById('gm-saved').value,monthly:document.getElementById('gm-monthly').value};
   if(editGoalId){const i=goals.findIndex(g=>g.id===editGoalId);if(i>=0)goals[i]=goal}else goals.push(goal);
-  sv('goals',goals);closeM('m-goal');buildTrack();toast('יעד נשמר ✓');
+  await sv('goals',goals);closeM('m-goal');buildTrack();toast('יעד נשמר ✓');
 }
-function deleteGoal(){if(!confirm('למחוק?'))return;goals=goals.filter(g=>g.id!==editGoalId);sv('goals',goals);closeM('m-goal');buildTrack();toast('נמחק ✓')}
+async function deleteGoal(){if(!confirm('למחוק?'))return;goals=goals.filter(g=>g.id!==editGoalId);await sv('goals',goals);closeM('m-goal');buildTrack();toast('נמחק ✓')}
 
 function openDebtM(id){
-  editDebtId=id;
-  const d=id?debts.find(x=>x.id===id):null;
+  editDebtId=id;const d=id?debts.find(x=>x.id===id):null;
   document.getElementById('dm-title').textContent=d?'עריכת חוב':'חוב / הלוואה חדש';
-  document.getElementById('dm-name').value=d?d.name:'';
-  document.getElementById('dm-total').value=d?d.total:'';
-  document.getElementById('dm-remain').value=d?d.remain:'';
-  document.getElementById('dm-monthly').value=d?d.monthly:'';
-  document.getElementById('dm-end').value=d?d.end:'';
-  document.getElementById('dm-del').style.display=d?'block':'none';
-  openM('m-debt');
+  document.getElementById('dm-name').value=d?d.name:'';document.getElementById('dm-total').value=d?d.total:'';
+  document.getElementById('dm-remain').value=d?d.remain:'';document.getElementById('dm-monthly').value=d?d.monthly:'';
+  document.getElementById('dm-end').value=d?d.end:'';document.getElementById('dm-del').style.display=d?'block':'none';openM('m-debt');
 }
-function saveDebt(){
-  const name=document.getElementById('dm-name').value.trim();
-  if(!name)return toast('הכנס שם',1);
+async function saveDebt(){
+  const name=document.getElementById('dm-name').value.trim();if(!name)return toast('הכנס שם',1);
   const debt={id:editDebtId||Date.now(),name,total:document.getElementById('dm-total').value,remain:document.getElementById('dm-remain').value,monthly:document.getElementById('dm-monthly').value,end:document.getElementById('dm-end').value};
   if(editDebtId){const i=debts.findIndex(d=>d.id===editDebtId);if(i>=0)debts[i]=debt}else debts.push(debt);
-  sv('debts',debts);closeM('m-debt');buildTrack();toast('נשמר ✓');
+  await sv('debts',debts);closeM('m-debt');buildTrack();toast('נשמר ✓');
 }
-function deleteDebt(){if(!confirm('למחוק?'))return;debts=debts.filter(d=>d.id!==editDebtId);sv('debts',debts);closeM('m-debt');buildTrack();toast('נמחק ✓')}
+async function deleteDebt(){if(!confirm('למחוק?'))return;debts=debts.filter(d=>d.id!==editDebtId);await sv('debts',debts);closeM('m-debt');buildTrack();toast('נמחק ✓')}
 
-// PENSION
 let penTab='funds';let editFundId=null;let editInsId=null;
 function buildPension(){
   const el=document.getElementById('s-pension');
@@ -841,8 +1019,7 @@ function buildPension(){
   renderPenTab();
 }
 function renderPenTab(){
-  const el=document.getElementById('pen-content');
-  if(!el)return;
+  const el=document.getElementById('pen-content');if(!el)return;
   if(penTab==='funds'){
     el.innerHTML=`
     ${funds.length?funds.map(f=>`<div class="fund-card" onclick="openFundM(${f.id})">
@@ -860,7 +1037,6 @@ function renderPenTab(){
     <button class="fab" style="margin-top:12px" onclick="openFundM(null)">+ הוסף קרן / חיסכון</button>`;
   } else if(penTab==='proj'){
     const totFunds=funds.reduce((s,f)=>s+(parseFloat(f.balance)||0),0);
-    const totMonthly=funds.reduce((s,f)=>s+(parseFloat(f.monthly)||0),0);
     el.innerHTML=`<div class="card pad">
       <div style="font-size:13px;font-weight:700;margin-bottom:14px;color:var(--text)">תחזית לפרישה</div>
       <div class="slider-wrap"><div class="slider-lbl"><span>גיל נוכחי</span><span id="p-cur-v">40</span></div><input type="range" min="20" max="65" value="40" id="p-cur" oninput="calcProj()"></div>
@@ -919,46 +1095,35 @@ function calcProj(){
 }
 
 function openFundM(id){
-  editFundId=id;
-  const f=id?funds.find(x=>x.id===id):null;
+  editFundId=id;const f=id?funds.find(x=>x.id===id):null;
   document.getElementById('fm-title').textContent=f?'עריכת '+f.name:'קרן חדשה';
-  document.getElementById('fm-name').value=f?f.name:'';
-  document.getElementById('fm-company').value=f?f.company:'';
-  document.getElementById('fm-type').value=f?f.type:'קרן פנסיה';
-  document.getElementById('fm-balance').value=f?f.balance:'';
-  document.getElementById('fm-monthly').value=f?f.monthly:'';
-  document.getElementById('fm-return').value=f?f.ret:'';
-  document.getElementById('fm-del').style.display=f?'block':'none';
-  openM('m-fund');
+  document.getElementById('fm-name').value=f?f.name:'';document.getElementById('fm-company').value=f?f.company:'';
+  document.getElementById('fm-type').value=f?f.type:'קרן פנסיה';document.getElementById('fm-balance').value=f?f.balance:'';
+  document.getElementById('fm-monthly').value=f?f.monthly:'';document.getElementById('fm-return').value=f?f.ret:'';
+  document.getElementById('fm-del').style.display=f?'block':'none';openM('m-fund');
 }
-function saveFund(){
-  const name=document.getElementById('fm-name').value.trim();
-  if(!name)return toast('הכנס שם',1);
+async function saveFund(){
+  const name=document.getElementById('fm-name').value.trim();if(!name)return toast('הכנס שם',1);
   const fund={id:editFundId||Date.now(),name,company:document.getElementById('fm-company').value.trim(),type:document.getElementById('fm-type').value,balance:document.getElementById('fm-balance').value,monthly:document.getElementById('fm-monthly').value,ret:document.getElementById('fm-return').value};
   if(editFundId){const i=funds.findIndex(f=>f.id===editFundId);if(i>=0)funds[i]=fund}else funds.push(fund);
-  sv('funds',funds);closeM('m-fund');buildPension();toast('נשמר ✓');
+  await sv('funds',funds);closeM('m-fund');buildPension();toast('נשמר ✓');
 }
-function deleteFund(){if(!confirm('למחוק?'))return;funds=funds.filter(f=>f.id!==editFundId);sv('funds',funds);closeM('m-fund');buildPension();toast('נמחק ✓')}
+async function deleteFund(){if(!confirm('למחוק?'))return;funds=funds.filter(f=>f.id!==editFundId);await sv('funds',funds);closeM('m-fund');buildPension();toast('נמחק ✓')}
 
 function openInsM(id){
-  editInsId=id;
-  const i=id?insurances.find(x=>x.id===id):null;
+  editInsId=id;const i=id?insurances.find(x=>x.id===id):null;
   document.getElementById('im-title').textContent=i?'עריכת ביטוח':'ביטוח חדש';
-  document.getElementById('im-type').value=i?i.type:'ביטוח חיים';
-  document.getElementById('im-company').value=i?i.company:'';
-  document.getElementById('im-premium').value=i?i.premium:'';
-  document.getElementById('im-coverage').value=i?i.coverage:'';
-  document.getElementById('im-del').style.display=i?'block':'none';
-  openM('m-ins');
+  document.getElementById('im-type').value=i?i.type:'ביטוח חיים';document.getElementById('im-company').value=i?i.company:'';
+  document.getElementById('im-premium').value=i?i.premium:'';document.getElementById('im-coverage').value=i?i.coverage:'';
+  document.getElementById('im-del').style.display=i?'block':'none';openM('m-ins');
 }
-function saveIns(){
-  const company=document.getElementById('im-company').value.trim();
-  if(!company)return toast('הכנס חברה',1);
+async function saveIns(){
+  const company=document.getElementById('im-company').value.trim();if(!company)return toast('הכנס חברה',1);
   const ins={id:editInsId||Date.now(),type:document.getElementById('im-type').value,company,premium:document.getElementById('im-premium').value,coverage:document.getElementById('im-coverage').value};
   if(editInsId){const i=insurances.findIndex(x=>x.id===editInsId);if(i>=0)insurances[i]=ins}else insurances.push(ins);
-  sv('insurances',insurances);closeM('m-ins');buildPension();toast('נשמר ✓');
+  await sv('insurances',insurances);closeM('m-ins');buildPension();toast('נשמר ✓');
 }
-function deleteIns(){if(!confirm('למחוק?'))return;insurances=insurances.filter(i=>i.id!==editInsId);sv('insurances',insurances);closeM('m-ins');buildPension();toast('נמחק ✓')}
+async function deleteIns(){if(!confirm('למחוק?'))return;insurances=insurances.filter(i=>i.id!==editInsId);await sv('insurances',insurances);closeM('m-ins');buildPension();toast('נמחק ✓')}
 
 buildDash();
 </script>
