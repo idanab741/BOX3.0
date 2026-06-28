@@ -450,16 +450,19 @@ let unsubscribe = null;
 
 // ── AUTH STATE ──────────────────────────────────────────────
 onAuthStateChanged(auth, user => {
+  console.log("AUTH:", user);
+
   if (user) {
+    console.log("UID:", user.uid);
+
     currentUID = user.uid;
     document.getElementById('auth-screen').style.display = 'none';
     document.getElementById('main-app').style.display = 'flex';
+
     listenToData(user.uid);
   } else {
-    currentUID = null;
-    if (unsubscribe) { unsubscribe(); unsubscribe = null; }
-    document.getElementById('auth-screen').style.display = 'flex';
-    document.getElementById('main-app').style.display = 'none';
+    console.log("NO USER");
+    ...
   }
 });
 
@@ -518,8 +521,8 @@ function showErr(msg) {
 function listenToData(uid) {
   showLoader(true);
   unsubscribe = onSnapshot(doc(db,'users',uid), snap => {
-if (!snap.exists()) { showLoader(false); return; }
-  const d = snap.data();
+    if (!snap.exists()) return;
+    const d = snap.data();
     txns        = d.txns        || [];
     incomes     = d.incomes     || [];
     budgets     = d.budgets     || CATS.map(c=>({n:c.n,budget:0}));
@@ -568,6 +571,7 @@ function showLoader(show) {
 }
 
 // kick off
+buildDash();
 
 </script>
 
