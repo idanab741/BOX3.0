@@ -1124,7 +1124,6 @@ async function saveIns(){
 }
 async function deleteIns(){if(!confirm('למחוק?'))return;insurances=insurances.filter(i=>i.id!==editInsId);await sv('insurances',insurances);closeM('m-ins');buildPension();toast('נמחק ✓')}
 
-buildDash();
 </script>
 </body>
 </html>
