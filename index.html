@@ -550,11 +550,9 @@ async function saveToCloud(data) {
     await updateDoc(doc(db,'users',currentUID), data);
   } catch(e) {
     // if doc doesn't exist yet, create it
-    await setDoc(doc(db,'users',currentUID), {
-      txns, incomes, budgets, goals, debts, funds, insurances, ...data
-    });
-  }
-}
+await setDoc(doc(db,'users',currentUID), Object.assign(
+  {txns, incomes, budgets, goals, debts, funds, insurances}, data
+));
 
 // Replace sv() to save to Firestore
 window.sv = async function(key, val) {
