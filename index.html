@@ -199,6 +199,7 @@ input[type=range]{width:100%;accent-color:var(--primary)}
 <div class="app">
   <div class="screen" id="s-dash" style="display:block"></div>
   <div class="screen" id="s-exp" style="display:none"></div>
+  <div class="screen" id="s-inc" style="display:none"></div>
   <div class="screen" id="s-budget" style="display:none"></div>
   <div class="screen" id="s-track" style="display:none"></div>
   <div class="screen" id="s-pension" style="display:none"></div>
@@ -206,6 +207,7 @@ input[type=range]{width:100%;accent-color:var(--primary)}
   <nav class="navbar">
     <div class="nav-item active" onclick="nav('dash',this)"><div class="ni">🏠</div><div class="nl">ראשי</div></div>
     <div class="nav-item" onclick="nav('exp',this)"><div class="ni">💸</div><div class="nl">הוצאות</div></div>
+    <div class="nav-item" onclick="nav('inc',this)"><div class="ni">💰</div><div class="nl">הכנסות</div></div>
     <div class="nav-item" onclick="nav('budget',this)"><div class="ni">🎯</div><div class="nl">תקציב</div></div>
     <div class="nav-item" onclick="nav('track',this)"><div class="ni">📈</div><div class="nl">מעקב</div></div>
     <div class="nav-item" onclick="nav('pension',this)"><div class="ni">🏛️</div><div class="nl">פנסיה</div></div>
@@ -237,15 +239,18 @@ input[type=range]{width:100%;accent-color:var(--primary)}
   <div class="modal-overlay" id="m-inc">
     <div class="modal" onclick="event.stopPropagation()">
       <div class="modal-handle"></div>
-      <div class="modal-title">הכנסה חדשה</div>
+      <div class="modal-title" id="inc-title">הכנסה חדשה</div>
       <label class="modal-label">סכום (₪)</label>
       <input class="modal-input" id="inc-amt" type="number" placeholder="0" inputmode="numeric">
       <label class="modal-label" style="margin-top:10px">מקור</label>
       <input class="modal-input" id="inc-src" type="text" placeholder="משכורת, פרילנס, אחר...">
+      <label class="modal-label" style="margin-top:10px">תאריך</label>
+      <input class="modal-input" id="inc-date" type="text" placeholder="השאר ריק לתאריך היום">
       <div class="modal-btns">
         <button class="modal-cancel" onclick="closeM('m-inc')">ביטול</button>
         <button class="modal-save" onclick="saveInc()">שמור הכנסה</button>
       </div>
+      <button class="modal-delete" id="inc-del" onclick="deleteInc()" style="display:none">מחק הכנסה</button>
     </div>
   </div>
 
@@ -391,7 +396,7 @@ function nav(name,el){
   document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
   document.getElementById('s-'+name).style.display='block';
   el.classList.add('active');
-  ({dash:buildDash,exp:buildExp,budget:buildBudget,track:buildTrack,pension:buildPension})[name]?.();
+  ({dash:buildDash,exp:buildExp,inc:buildIncomesScreen,budget:buildBudget,track:buildTrack,pension:buildPension})[name]?.();
 }
 function closeM(id){document.getElementById(id).classList.remove('show')}
 function openM(id){document.getElementById(id).classList.add('show')}
@@ -436,13 +441,82 @@ function saveExp(){
   document.getElementById('exp-name').value='';
   closeM('m-exp');buildDash();toast('הוצאה נשמרה ✓');
 }
+let editIncId=null;
+function openIncM(id){
+  editIncId=id;
+  const inc=id?incomes.find(x=>x.id===id):null;
+  document.getElementById('inc-title').textContent=inc?'עריכת הכנסה':'הכנסה חדשה';
+  document.getElementById('inc-amt').value=inc?inc.amt:'';
+  document.getElementById('inc-src').value=inc?inc.src:'';
+  document.getElementById('inc-date').value=inc?inc.date:'';
+  document.getElementById('inc-del').style.display=inc?'block':'none';
+  openM('m-inc');
+}
 function saveInc(){
   const amt=parseFloat(document.getElementById('inc-amt').value);
   if(!amt||amt<=0)return toast('הכנס סכום',1);
-  incomes.unshift({id:Date.now(),amt,src:document.getElementById('inc-src').value.trim()||'הכנסה',date:new Date().toLocaleDateString('he-IL')});
+  const src=document.getElementById('inc-src').value.trim()||'הכנסה';
+  const date=document.getElementById('inc-date').value.trim()||new Date().toLocaleDateString('he-IL');
+  if(editIncId){
+    const i=incomes.findIndex(x=>x.id===editIncId);
+    if(i>=0)incomes[i]={...incomes[i],amt,src,date};
+  } else {
+    incomes.unshift({id:Date.now(),amt,src,date});
+  }
   sv('incomes',incomes);
-  document.getElementById('inc-amt').value='';document.getElementById('inc-src').value='';
-  closeM('m-inc');buildDash();toast('הכנסה נשמרה ✓');
+  document.getElementById('inc-amt').value='';
+  document.getElementById('inc-src').value='';
+  document.getElementById('inc-date').value='';
+  closeM('m-inc');buildDash();
+  if(document.getElementById('s-inc').style.display!=='none')buildIncomesScreen();
+  toast(editIncId?'הכנסה עודכנה ✓':'הכנסה נשמרה ✓');
+}
+function deleteInc(){
+  if(!confirm('למחוק הכנסה זו?'))return;
+  incomes=incomes.filter(x=>x.id!==editIncId);
+  sv('incomes',incomes);closeM('m-inc');buildDash();
+  if(document.getElementById('s-inc').style.display!=='none')buildIncomesScreen();
+  toast('נמחק ✓');
+}
+
+// INCOMES SCREEN
+function buildIncomesScreen(){
+  const el=document.getElementById('s-inc');
+  const total=incomes.reduce((s,i)=>s+i.amt,0);
+  const now=new Date();const m=now.getMonth();const y=now.getFullYear();
+  const thisMonth=incomes.filter(i=>{const d=new Date(i.id);return d.getMonth()===m&&d.getFullYear()===y});
+  const thisMonthTotal=thisMonth.reduce((s,i)=>s+i.amt,0);
+  el.innerHTML=`
+  <div class="topbar">
+    <div class="topbar-row">
+      <div style="font-size:17px;font-weight:700">הכנסות</div>
+      <div style="font-size:13px;opacity:.8">${total>0?'₪'+total.toLocaleString():''}</div>
+    </div>
+  </div>
+  <div style="padding:14px">
+    ${incomes.length?`
+    <div class="card pad" style="margin-bottom:12px;background:linear-gradient(135deg,#e8faf6,#f0fdf8);border-color:#6ee7b7">
+      <div style="display:flex;justify-content:space-between">
+        <div><div style="font-size:11px;color:var(--text2);font-weight:600;margin-bottom:3px">החודש</div><div style="font-size:22px;font-weight:800;color:var(--green)">₪${thisMonthTotal.toLocaleString()}</div></div>
+        <div style="text-align:left"><div style="font-size:11px;color:var(--text2);font-weight:600;margin-bottom:3px">סה"כ כל הזמן</div><div style="font-size:22px;font-weight:800;color:var(--green)">₪${total.toLocaleString()}</div></div>
+      </div>
+    </div>
+    <div class="card">
+      ${incomes.map(i=>`<div class="txn">
+        <div class="txn-ic" style="background:#e8faf6">💰</div>
+        <div style="flex:1">
+          <div class="txn-name">${i.src}</div>
+          <div class="txn-sub">${i.date}</div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px">
+          <div class="txn-amt" style="color:var(--green)">+₪${i.amt.toLocaleString()}</div>
+          <div onclick="openIncM(${i.id})" style="font-size:10px;color:var(--primary);cursor:pointer;font-weight:600">עריכה / מחיקה</div>
+        </div>
+      </div>`).join('')}
+    </div>`:`<div class="card"><div class="empty"><div class="empty-icon">💰</div><div class="empty-title">אין הכנסות עדיין</div><div class="empty-sub">הוסף משכורת, פרילנס<br>או כל הכנסה אחרת</div></div></div>`}
+    <div style="height:14px"></div>
+    <button class="fab" onclick="openIncM(null)">+ הוסף הכנסה</button>
+  </div>`;
 }
 
 // DASHBOARD
@@ -474,10 +548,10 @@ function buildDash(){
   </div>
 
   <div class="kpi-grid">
-    <div class="kpi" onclick="openM('m-inc')">
+    <div class="kpi" onclick="document.querySelectorAll('.nav-item')[2].click()">
       <div class="kpi-icon">💰</div><div class="kpi-lbl">הכנסות החודש</div>
       <div class="kpi-val" style="color:var(--green)">${totI>0?'₪'+totI.toLocaleString():'—'}</div>
-      <div class="kpi-sub">לחץ להוספת הכנסה</div>
+      <div class="kpi-sub">${mi.length>0?mi.length+' הכנסות':'לחץ לניהול הכנסות'}</div>
     </div>
     <div class="kpi">
       <div class="kpi-icon">💸</div><div class="kpi-lbl">הוצאות החודש</div>
