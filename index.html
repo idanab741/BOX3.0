@@ -518,8 +518,8 @@ function showErr(msg) {
 function listenToData(uid) {
   showLoader(true);
   unsubscribe = onSnapshot(doc(db,'users',uid), snap => {
-    if (!snap.exists()) return;
-    const d = snap.data();
+if (!snap.exists()) { showLoader(false); return; }
+  const d = snap.data();
     txns        = d.txns        || [];
     incomes     = d.incomes     || [];
     budgets     = d.budgets     || CATS.map(c=>({n:c.n,budget:0}));
