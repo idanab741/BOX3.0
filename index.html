@@ -657,8 +657,10 @@ function buildHome(){
   const gSaved=topGoal?parseFloat(topGoal.saved)||0:0;
   const gGoalPct=gTarget>0?Math.min(Math.round(gSaved/gTarget*100),100):0;
   const totFunds=funds.reduce((s,f)=>s+(parseFloat(f.balance)||0),0);
-  const h=now.getHours();
-  const greeting=h<12?'בוקר טוב ☀️':h<17?'צהריים טובים 👋':'ערב טוב 🌙';
+ const h = new Date().toLocaleString('he-IL', {timeZone:'Asia/Jerusalem', hour:'numeric', hour12:false});
+const hour = parseInt(h);
+const greeting = hour >= 5 && hour < 12 ? 'בוקר טוב ☀️' : hour < 17 ? 'צהריים טובים 👋' : hour < 21 ? 'ערב טוב 🌙' : 'לילה טוב 🌛';
+
 
   el.innerHTML=
   // GREETING
