@@ -10,11 +10,7 @@
   --bg:#0f0f1a;--bg2:#1a1a2e;--bg3:#242438;
   --card:#1e1e32;--card2:#252540;
   --primary:#4338ca;--primary2:#3730a3;--primary-light:#6d66e8;
-  --green:#00b894;--green-bg:rgba(0,184,148,.12);
-  --red:#e17055;--red-bg:rgba(225,112,85,.12);
-  --blue:#0984e3;--blue-bg:rgba(9,132,227,.12);
-  --amber:#f59e0b;--amber-bg:rgba(245,158,11,.12);
-  --purple:#a855f7;--purple-bg:rgba(168,85,247,.12);
+  --green:#00b894;--red:#e17055;--blue:#0984e3;--amber:#f59e0b;--purple:#a855f7;
   --text:#f0f0ff;--text2:#a0a0c0;--text3:#606080;
   --border:rgba(255,255,255,.07);--radius:16px;
 }
@@ -23,252 +19,198 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 .screen{flex:1;overflow-y:auto;padding-bottom:80px}
 .screen::-webkit-scrollbar{display:none}
 
-/* TOPBAR */
 .topbar{background:linear-gradient(160deg,#1a1040,#2d1f6e 60%,#4338ca);padding:14px 18px 20px;color:#fff}
 .topbar-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
-.topbar h1{font-size:17px;font-weight:700}
-.avatar{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px}
 
-/* NAVBAR */
-.navbar{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:var(--card);border-top:1px solid var(--border);display:flex;padding:8px 0 max(12px,env(safe-area-inset-bottom));z-index:100}
+.navbar{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:var(--card);border-top:1px solid var(--border);display:flex;padding:8px 0 12px;z-index:100}
 .nav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;opacity:.4;transition:opacity .2s}
 .nav-item.active{opacity:1}
 .nav-item .ni{font-size:22px}
 .nav-item .nl{font-size:10px;font-weight:600;color:var(--primary-light)}
 .nav-item:not(.active) .nl{color:var(--text3)}
 
-/* CARDS */
 .card{background:var(--card);border-radius:var(--radius);border:1px solid var(--border)}
 .pad{padding:16px}
+.sec{padding:0 14px;margin-bottom:14px}
+.sec-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.sec-hdr h2{font-size:14px;font-weight:700}
 
-/* KPI GRID */
 .kpi-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:14px}
 .kpi{background:var(--card);border-radius:14px;border:1px solid var(--border);padding:14px}
 .kpi-icon{font-size:22px;margin-bottom:6px}
 .kpi-lbl{font-size:11px;color:var(--text2);font-weight:500}
 .kpi-val{font-size:22px;font-weight:800;letter-spacing:-.5px;margin:3px 0}
-.kpi-badge{font-size:10px;padding:2px 8px;border-radius:10px;font-weight:600;display:inline-block}
 
-/* SECTION */
-.sec{padding:0 14px;margin-bottom:14px}
-.sec-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
-.sec-hdr h2{font-size:14px;font-weight:700}
-.sec-hdr a{font-size:12px;color:var(--primary-light);cursor:pointer}
-
-/* TXN */
 .txn{display:flex;align-items:center;gap:11px;padding:11px 14px;border-bottom:1px solid var(--border)}
 .txn:last-child{border-bottom:none}
 .txn-ic{width:38px;height:38px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
 .txn-info{flex:1;min-width:0}
 .txn-name{font-size:13px;font-weight:600}
 .txn-cat{font-size:11px;color:var(--text2);margin-top:1px}
-.txn-amt{font-size:14px;font-weight:800}
+.txn-amt{font-size:14px;font-weight:800;text-align:left}
 .txn-date{font-size:10px;color:var(--text3);text-align:left}
 
-/* DONUT */
-.donut-wrap{position:relative;display:flex;justify-content:center;margin:8px 0}
-.donut-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center}
-.donut-center .dv{font-size:20px;font-weight:800}
-.donut-center .dl{font-size:10px;color:var(--text2)}
+.empty-state{text-align:center;padding:40px 20px;color:var(--text3)}
+.empty-state .ei{font-size:40px;margin-bottom:12px}
+.empty-state .et{font-size:14px;font-weight:600;color:var(--text2);margin-bottom:6px}
+.empty-state .es{font-size:12px;line-height:1.6}
 
-/* BARS */
-.bar-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
-.bar-lbl{font-size:11px;color:var(--text2);width:72px;text-align:right;font-weight:500}
-.bar-track{flex:1;height:6px;background:rgba(255,255,255,.08);border-radius:3px;overflow:hidden}
-.bar-fill{height:100%;border-radius:3px;transition:width 1s ease}
-.bar-amt{font-size:11px;color:var(--text2);width:58px;text-align:left}
+.fab{width:calc(100% - 28px);margin:0 14px;background:linear-gradient(135deg,var(--primary),#7c3aed);color:#fff;border:none;border-radius:14px;padding:15px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:8px}
 
-/* QUICK ACTIONS */
-.qa-grid{display:flex;gap:10px;overflow-x:auto;padding:0 14px 14px}
-.qa-grid::-webkit-scrollbar{display:none}
-.qa{display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;flex-shrink:0}
-.qa-ic{width:52px;height:52px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:24px}
-.qa-lbl{font-size:10px;color:var(--text2);font-weight:500;white-space:nowrap}
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:200;align-items:flex-end;justify-content:center}
+.modal-overlay.show{display:flex}
+.modal{background:var(--bg2);border-radius:24px 24px 0 0;padding:20px 18px;width:100%;max-width:430px;max-height:85vh;overflow-y:auto}
+.modal::-webkit-scrollbar{display:none}
+.modal-handle{width:40px;height:4px;background:var(--border);border-radius:2px;margin:0 auto 16px}
+.modal-title{font-size:16px;font-weight:700;margin-bottom:16px;text-align:center}
+.modal-field{margin-bottom:14px}
+.modal-label{font-size:12px;color:var(--text2);font-weight:600;margin-bottom:6px;letter-spacing:.3px;display:block}
+.modal-input{width:100%;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px 14px;font-size:15px;font-family:inherit;color:var(--text);outline:none;direction:rtl;-webkit-appearance:none}
+.modal-input:focus{border-color:var(--primary-light)}
+.modal-select{width:100%;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px 14px;font-size:14px;font-family:inherit;color:var(--text);outline:none;direction:rtl;-webkit-appearance:none}
+.modal-btns{display:flex;gap:8px;margin-top:16px}
+.modal-cancel{flex:1;background:var(--card2);color:var(--text2);border:none;border-radius:12px;padding:13px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit}
+.modal-save{flex:2;background:linear-gradient(135deg,var(--primary),#7c3aed);color:#fff;border:none;border-radius:12px;padding:13px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit}
+.modal-delete{width:100%;background:rgba(225,112,85,.15);color:#e17055;border:none;border-radius:12px;padding:12px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;margin-top:8px}
 
-/* TABS */
-.tabs{display:flex;background:var(--card);border-radius:12px;padding:4px;gap:4px;margin-bottom:12px}
-.tab{flex:1;padding:8px;border-radius:9px;font-size:11px;font-weight:700;text-align:center;cursor:pointer;border:none;font-family:inherit;color:var(--text2);background:transparent;transition:all .2s}
-.tab.active{background:var(--primary);color:#fff}
-
-/* CHIPS */
 .chips{display:flex;gap:7px;overflow-x:auto;padding-bottom:4px;margin-bottom:12px}
 .chips::-webkit-scrollbar{display:none}
 .chip{padding:6px 14px;border-radius:20px;font-size:12px;font-weight:600;white-space:nowrap;cursor:pointer;border:none;font-family:inherit;transition:all .15s}
 .chip.active{background:var(--primary);color:#fff}
 .chip:not(.active){background:var(--card2);color:var(--text2)}
 
-/* SEARCH */
 .search{display:flex;align-items:center;gap:8px;background:var(--card);border-radius:12px;padding:10px 14px;margin-bottom:12px;border:1px solid var(--border)}
 .search input{border:none;outline:none;font-family:inherit;font-size:13px;flex:1;color:var(--text);background:transparent;direction:rtl}
 .search input::placeholder{color:var(--text3)}
 
-/* BUDGET */
 .budget-item{background:var(--card);border-radius:14px;border:1px solid var(--border);padding:14px;margin-bottom:10px;cursor:pointer}
 .bi-top{display:flex;align-items:center;gap:10px;margin-bottom:10px}
 .bi-icon{width:38px;height:38px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
-.bi-info{flex:1}
 .bi-name{font-size:13px;font-weight:700}
 .bi-meta{font-size:11px;color:var(--text2);margin-top:1px}
-.bi-right{text-align:left}
 .bi-spent{font-size:15px;font-weight:800}
 .bi-budget{font-size:10px;color:var(--text2)}
 .bi-track{height:6px;background:rgba(255,255,255,.08);border-radius:3px;overflow:hidden;margin-bottom:6px}
-.bi-fill{height:100%;border-radius:3px;transition:width 1s ease}
+.bi-fill{height:100%;border-radius:3px;transition:width .8s ease}
 .bi-footer{display:flex;justify-content:space-between;font-size:11px}
-.bi-remain{font-weight:600}
 
-/* ALERT */
-.alert{background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.3);border-radius:12px;padding:12px 14px;display:flex;gap:10px;margin-bottom:12px}
-.alert-text{font-size:12px;color:#fcd34d;line-height:1.5}
-.alert-title{font-weight:700;font-size:13px;margin-bottom:2px}
+.tabs{display:flex;background:var(--card);border-radius:12px;padding:4px;gap:4px;margin-bottom:12px}
+.tab{flex:1;padding:8px;border-radius:9px;font-size:11px;font-weight:700;text-align:center;cursor:pointer;border:none;font-family:inherit;color:var(--text2);background:transparent;transition:all .2s}
+.tab.active{background:var(--primary);color:#fff}
 
-/* FUND CARD */
-.fund-card{background:var(--card);border-radius:14px;border:1px solid var(--border);padding:14px;margin-bottom:10px;cursor:pointer}
-.fc-top{display:flex;align-items:center;gap:10px;margin-bottom:10px}
-.fc-icon{width:42px;height:42px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
-.fc-name{font-size:13px;font-weight:700}
-.fc-company{font-size:11px;color:var(--text2);margin-top:1px}
-.fc-val{font-size:16px;font-weight:800}
-.fc-return{font-size:11px;font-weight:600;margin-top:1px}
-.fc-details{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;padding-top:10px;border-top:1px solid var(--border)}
-.fcd{text-align:center}
-.fcd-val{font-size:12px;font-weight:700}
-.fcd-lbl{font-size:10px;color:var(--text2);margin-top:1px}
+.cat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px}
+.cat-btn{display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;padding:8px 4px;border-radius:12px;border:2px solid transparent;transition:all .15s;background:transparent}
+.cat-btn.sel{border-color:var(--primary-light);background:rgba(109,102,232,.1)}
+.cat-btn-ic{width:44px;height:44px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px}
+.cat-btn-lbl{font-size:10px;font-weight:600;color:var(--text2);text-align:center}
 
-/* PENSION HEADER */
-.pension-hdr{background:linear-gradient(160deg,#0f1a2e,#1a3050 60%,#1e4976);padding:16px 18px 20px;color:#fff}
-.retire-box{background:rgba(0,0,0,.3);border-radius:14px;padding:14px}
-.retire-row{display:flex;justify-content:space-between;margin-bottom:10px}
-.retire-lbl{font-size:11px;opacity:.6;margin-bottom:3px}
-.retire-val{font-size:24px;font-weight:800;letter-spacing:-.5px}
-.retire-sub{font-size:11px;opacity:.5;margin-top:1px}
-.retire-track{height:8px;background:rgba(255,255,255,.1);border-radius:4px;overflow:hidden;margin:8px 0}
-.retire-fill{height:100%;background:linear-gradient(90deg,#36d399,#3abff8);border-radius:4px;transition:width 1.2s ease}
-.retire-stats{display:flex;justify-content:space-between;margin-top:6px}
-.rs-val{font-size:14px;font-weight:700;text-align:center}
-.rs-lbl{font-size:10px;opacity:.5;text-align:center;margin-top:1px}
+.numpad{display:grid;grid-template-columns:repeat(3,1fr);background:var(--card);border-radius:14px;overflow:hidden;border:1px solid var(--border);margin-bottom:12px}
+.nk{padding:18px 0;text-align:center;font-size:20px;font-weight:600;cursor:pointer;border-left:1px solid var(--border);border-bottom:1px solid var(--border);user-select:none;transition:background .1s}
+.nk:active{background:var(--card2)}
+.nk:nth-child(3n+1){border-left:none}
+.nk.action{color:var(--primary-light);font-size:14px}
+.nk.del{font-size:18px}
 
-/* SLIDER */
-.slider-wrap{margin-bottom:14px}
-.slider-lbl{display:flex;justify-content:space-between;font-size:12px;color:var(--text2);margin-bottom:6px}
-.slider-lbl span:last-child{font-weight:700;color:var(--primary-light)}
-input[type=range]{width:100%;accent-color:var(--primary-light)}
-.proj-result{background:linear-gradient(135deg,#0f1a2e,#1e4976);border-radius:12px;padding:14px;text-align:center;margin-top:8px;border:1px solid rgba(59,191,248,.2)}
-.proj-val{font-size:26px;font-weight:800;letter-spacing:-.5px;color:#3abff8}
-.proj-lbl{font-size:11px;color:var(--text2);margin-bottom:6px}
-.proj-sub{font-size:11px;color:var(--text2);margin-top:6px}
-.proj-row{display:flex;justify-content:space-around;margin-top:10px}
-.pi-val{font-size:13px;font-weight:700;text-align:center}
-.pi-lbl{font-size:10px;color:var(--text2);text-align:center;margin-top:1px}
+.amount-display{text-align:center;padding:16px;font-size:44px;font-weight:800;letter-spacing:-2px;color:var(--text);min-height:70px}
+.amount-display .cur{font-size:24px;opacity:.6;font-weight:500}
 
-/* INS */
-.ins-row{display:flex;align-items:center;gap:12px;padding:12px 14px;border-bottom:1px solid var(--border);cursor:pointer}
-.ins-row:last-child{border-bottom:none}
-.ins-ic{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
-.ins-name{font-size:13px;font-weight:600}
-.ins-sub{font-size:11px;color:var(--text2);margin-top:1px}
-.ins-premium{font-size:13px;font-weight:700;text-align:left}
-.ins-coverage{font-size:10px;color:var(--text2);text-align:left;margin-top:1px}
+.toast{position:fixed;top:20px;left:50%;transform:translateX(-50%);background:var(--green);color:#fff;padding:10px 20px;border-radius:20px;font-size:13px;font-weight:700;z-index:300;opacity:0;transition:opacity .3s;pointer-events:none;white-space:nowrap}
+.toast.show{opacity:1}
+.toast.err{background:var(--red)}
 
-/* REPORTS */
-.reports-hdr{background:linear-gradient(160deg,#1a1040,#2d1f6e 60%,#4338ca);padding:14px 18px 20px}
-.period-tabs{display:flex;background:rgba(0,0,0,.3);border-radius:10px;padding:3px;gap:3px}
-.ptab{flex:1;padding:7px;border-radius:8px;font-size:11px;font-weight:700;text-align:center;cursor:pointer;border:none;font-family:inherit;color:rgba(255,255,255,.4);background:transparent;transition:all .2s}
-.ptab.active{background:#fff;color:var(--primary)}
+.bar-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.bar-lbl{font-size:11px;color:var(--text2);width:72px;text-align:right;font-weight:500}
+.bar-track{flex:1;height:6px;background:rgba(255,255,255,.08);border-radius:3px;overflow:hidden}
+.bar-fill{height:100%;border-radius:3px;transition:width .8s ease}
+.bar-amt{font-size:11px;color:var(--text2);width:58px;text-align:left}
+
 .stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
 .stat-card{background:var(--card);border-radius:14px;border:1px solid var(--border);padding:12px}
 .stat-icon{font-size:20px;margin-bottom:6px}
-.stat-lbl{font-size:11px;color:var(--text2);font-weight:500}
-.stat-val{font-size:17px;font-weight:800;margin-top:2px}
-.stat-trend{font-size:11px;font-weight:600;margin-top:3px}
-
-/* BAR CHART */
-.bar-chart{display:flex;align-items:flex-end;gap:5px;height:110px;padding-bottom:4px}
-.bc-col{display:flex;flex-direction:column;align-items:center;gap:3px;flex:1}
-.bc-bars{display:flex;gap:2px;align-items:flex-end;width:100%}
-.bc-bar{border-radius:3px 3px 0 0;flex:1;min-height:3px;transition:height .8s ease}
-.bc-lbl{font-size:9px;color:var(--text2);text-align:center}
-
-/* INSIGHT */
-.insight{background:var(--card);border-radius:14px;border:1px solid var(--border);padding:12px 14px;margin-bottom:8px;display:flex;gap:10px;cursor:pointer}
-.ins-badge{display:inline-block;font-size:10px;padding:2px 7px;border-radius:8px;font-weight:600;margin-top:4px}
-.ins-title{font-size:13px;font-weight:700;margin-bottom:2px}
-.ins-desc{font-size:12px;color:var(--text2);line-height:1.4}
-
-/* MONTH NAV */
-.month-nav{display:flex;align-items:center;justify-content:space-between;background:var(--card);border-radius:12px;padding:8px 14px;margin-bottom:12px;border:1px solid var(--border)}
-.month-arr{font-size:20px;cursor:pointer;color:var(--text2);padding:0 4px}
-.month-name{font-size:14px;font-weight:700}
-
-/* MODAL */
-.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:200;align-items:flex-end;justify-content:center}
-.modal-overlay.show{display:flex}
-.modal{background:var(--bg2);border-radius:24px 24px 0 0;padding:20px 18px;width:100%;max-width:430px}
-.modal-handle{width:40px;height:4px;background:var(--border);border-radius:2px;margin:0 auto 16px}
-.modal-title{font-size:16px;font-weight:700;margin-bottom:16px;text-align:center}
-.modal-label{font-size:12px;color:var(--text2);font-weight:600;margin-bottom:6px;letter-spacing:.3px}
-.modal-slider-val{font-size:24px;font-weight:800;color:var(--primary-light);text-align:center;margin:4px 0}
-.modal-btns{display:flex;gap:8px;margin-top:16px}
-.modal-cancel{flex:1;background:var(--card2);color:var(--text2);border:none;border-radius:12px;padding:13px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit}
-.modal-save{flex:2;background:linear-gradient(135deg,var(--primary),#7c3aed);color:#fff;border:none;border-radius:12px;padding:13px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit}
-
-/* CC COMPARE */
-.cc-legend{display:flex;gap:12px;margin-bottom:10px}
-.cc-leg{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text2)}
-.cc-dot{width:8px;height:8px;border-radius:50%}
-.cc-row{display:flex;align-items:center;gap:8px;margin-bottom:10px}
-.cc-lbl{font-size:11px;color:var(--text2);width:70px;text-align:right;font-weight:500}
-.cc-bars{flex:1;display:flex;flex-direction:column;gap:3px}
-.cc-bar-wrap{display:flex;align-items:center;gap:4px}
-.cc-bar{height:6px;border-radius:3px;transition:width 1s ease;min-width:2px}
-.cc-num{font-size:10px;color:var(--text2);white-space:nowrap}
-
-/* TOAST */
-.toast{position:fixed;top:20px;left:50%;transform:translateX(-50%);background:var(--green);color:#fff;padding:10px 20px;border-radius:20px;font-size:13px;font-weight:700;z-index:300;opacity:0;transition:opacity .3s;pointer-events:none}
-.toast.show{opacity:1}
+.stat-lbl{font-size:11px;color:var(--text2)}
+.stat-val{font-size:18px;font-weight:800;margin-top:2px}
 </style>
 </head>
 <body>
 <div class="app">
-
-  <!-- SCREENS -->
   <div class="screen" id="screen-dashboard" style="display:block"></div>
   <div class="screen" id="screen-expenses" style="display:none"></div>
   <div class="screen" id="screen-budget" style="display:none"></div>
-  <div class="screen" id="screen-pension" style="display:none"></div>
   <div class="screen" id="screen-reports" style="display:none"></div>
+  <div class="screen" id="screen-settings" style="display:none"></div>
 
-  <!-- NAVBAR -->
   <nav class="navbar">
-    <div class="nav-item active" onclick="showScreen('dashboard',this)">
-      <div class="ni">🏠</div><div class="nl">ראשי</div>
-    </div>
-    <div class="nav-item" onclick="showScreen('expenses',this)">
-      <div class="ni">💸</div><div class="nl">הוצאות</div>
-    </div>
-    <div class="nav-item" onclick="showScreen('budget',this)">
-      <div class="ni">🎯</div><div class="nl">תקציב</div>
-    </div>
-    <div class="nav-item" onclick="showScreen('pension',this)">
-      <div class="ni">🏛️</div><div class="nl">פנסיה</div>
-    </div>
-    <div class="nav-item" onclick="showScreen('reports',this)">
-      <div class="ni">📊</div><div class="nl">דוחות</div>
-    </div>
+    <div class="nav-item active" onclick="showScreen('dashboard',this)"><div class="ni">🏠</div><div class="nl">ראשי</div></div>
+    <div class="nav-item" onclick="showScreen('expenses',this)"><div class="ni">💸</div><div class="nl">הוצאות</div></div>
+    <div class="nav-item" onclick="showScreen('budget',this)"><div class="ni">🎯</div><div class="nl">תקציב</div></div>
+    <div class="nav-item" onclick="showScreen('reports',this)"><div class="ni">📊</div><div class="nl">דוחות</div></div>
+    <div class="nav-item" onclick="showScreen('settings',this)"><div class="ni">⚙️</div><div class="nl">הגדרות</div></div>
   </nav>
 
-  <!-- MODAL -->
-  <div class="modal-overlay" id="modal" onclick="closeModal(event)">
+  <!-- ADD EXPENSE MODAL -->
+  <div class="modal-overlay" id="modal-expense">
     <div class="modal" onclick="event.stopPropagation()">
       <div class="modal-handle"></div>
-      <div class="modal-title" id="modal-title">עריכת תקציב</div>
-      <div class="modal-label">תקציב חודשי</div>
-      <div class="modal-slider-val" id="modal-val">₪1,500</div>
-      <input type="range" min="100" max="10000" step="100" value="1500" id="modal-slider"
-        oninput="document.getElementById('modal-val').textContent='₪'+parseInt(this.value).toLocaleString()" style="width:100%;margin:6px 0">
+      <div class="modal-title">הוצאה חדשה</div>
+      <div class="amount-display"><span class="cur">₪</span><span id="exp-display">0</span></div>
+      <div class="numpad" id="numpad"></div>
+      <div class="modal-field">
+        <label class="modal-label">שם / תיאור</label>
+        <input class="modal-input" id="exp-name" type="text" placeholder="למשל: שופרסל, תדלוק...">
+      </div>
+      <div class="modal-field">
+        <label class="modal-label">קטגוריה</label>
+        <div class="cat-grid" id="cat-grid"></div>
+      </div>
+      <div class="modal-field">
+        <label class="modal-label">אמצעי תשלום</label>
+        <select class="modal-select" id="exp-src">
+          <option value="מזומן">מזומן</option>
+          <option value="לאומי">לאומי</option>
+          <option value="מקס">מקס</option>
+          <option value="ישראכרט">ישראכרט</option>
+          <option value="אחר">אחר</option>
+        </select>
+      </div>
       <div class="modal-btns">
-        <button class="modal-cancel" onclick="closeModal()">ביטול</button>
-        <button class="modal-save" onclick="saveModal()">שמור</button>
+        <button class="modal-cancel" onclick="closeModal('modal-expense')">ביטול</button>
+        <button class="modal-save" onclick="saveExpense()">שמור הוצאה</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADD INCOME MODAL -->
+  <div class="modal-overlay" id="modal-income">
+    <div class="modal" onclick="event.stopPropagation()">
+      <div class="modal-handle"></div>
+      <div class="modal-title">הכנסה חדשה</div>
+      <div class="modal-field">
+        <label class="modal-label">סכום (₪)</label>
+        <input class="modal-input" id="inc-amount" type="number" placeholder="0" inputmode="numeric">
+      </div>
+      <div class="modal-field">
+        <label class="modal-label">מקור</label>
+        <input class="modal-input" id="inc-source" type="text" placeholder="משכורת, פרילנס...">
+      </div>
+      <div class="modal-btns">
+        <button class="modal-cancel" onclick="closeModal('modal-income')">ביטול</button>
+        <button class="modal-save" onclick="saveIncome()">שמור הכנסה</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- BUDGET MODAL -->
+  <div class="modal-overlay" id="modal-budget">
+    <div class="modal" onclick="event.stopPropagation()">
+      <div class="modal-handle"></div>
+      <div class="modal-title" id="bm-title">תקציב קטגוריה</div>
+      <div class="modal-field">
+        <label class="modal-label">תקציב חודשי (₪)</label>
+        <input class="modal-input" id="bm-amount" type="number" placeholder="0" inputmode="numeric">
+      </div>
+      <div class="modal-btns">
+        <button class="modal-cancel" onclick="closeModal('modal-budget')">ביטול</button>
+        <button class="modal-save" onclick="saveBudget()">שמור</button>
       </div>
     </div>
   </div>
@@ -277,44 +219,30 @@ input[type=range]{width:100%;accent-color:var(--primary-light)}
 </div>
 
 <script>
-// ── DATA ──────────────────────────────────────────
-const txns=[
-  {ic:'🛒',bg:'rgba(0,184,148,.15)',name:'שופרסל אונליין',cat:'מזון',src:'leumi',amt:387,date:'28/06',day:28},
-  {ic:'⛽',bg:'rgba(9,132,227,.15)',name:'סונול תדלוק',cat:'רכב',src:'max',amt:310,date:'27/06',day:27},
-  {ic:'🍕',bg:'rgba(225,112,85,.15)',name:'אורנה ואלדו',cat:'בילוי',src:'max',amt:245,date:'27/06',day:27},
-  {ic:'💊',bg:'rgba(168,85,247,.15)',name:'סופר-פארם',cat:'בריאות',src:'isracard',amt:89,date:'25/06',day:25},
-  {ic:'📱',bg:'rgba(67,56,202,.2)',name:'HOT מובייל',cat:'תקשורת',src:'leumi',amt:120,date:'24/06',day:24},
-  {ic:'🛒',bg:'rgba(0,184,148,.15)',name:'רמי לוי',cat:'מזון',src:'isracard',amt:220,date:'23/06',day:23},
-  {ic:'🎬',bg:'rgba(225,112,85,.15)',name:'סינמה סיטי',cat:'בילוי',src:'max',amt:135,date:'22/06',day:22},
-  {ic:'👗',bg:'rgba(245,158,11,.15)',name:'H&M',cat:'ביגוד',src:'isracard',amt:380,date:'21/06',day:21},
-  {ic:'🚕',bg:'rgba(9,132,227,.15)',name:'גט טקסי',cat:'תחבורה',src:'max',amt:58,date:'20/06',day:20},
-  {ic:'☕',bg:'rgba(225,112,85,.15)',name:'ארומה',cat:'בילוי',src:'max',amt:47,date:'19/06',day:19},
-  {ic:'💈',bg:'rgba(168,85,247,.15)',name:'ספרות כהן',cat:'טיפוח',src:'isracard',amt:70,date:'18/06',day:18},
-  {ic:'📚',bg:'rgba(9,132,227,.15)',name:'Amazon',cat:'חינוך',src:'leumi',amt:42,date:'17/06',day:17},
-  {ic:'🛒',bg:'rgba(0,184,148,.15)',name:'יינות ביתן',cat:'מזון',src:'isracard',amt:165,date:'16/06',day:16},
-  {ic:'🏋️',bg:'rgba(168,85,247,.15)',name:'Holmes Place',cat:'בריאות',src:'leumi',amt:190,date:'15/06',day:15},
-  {ic:'🍔',bg:'rgba(225,112,85,.15)',name:'מקדונלדס',cat:'בילוי',src:'max',amt:73,date:'14/06',day:14},
-  {ic:'🏠',bg:'rgba(245,158,11,.15)',name:'ועד בית',cat:'דיור',src:'leumi',amt:450,date:'10/06',day:10},
-  {ic:'💡',bg:'rgba(245,158,11,.15)',name:'חברת חשמל',cat:'שירותים',src:'leumi',amt:280,date:'05/06',day:5},
-  {ic:'🌊',bg:'rgba(9,132,227,.15)',name:'עיריית ת"א',cat:'שירותים',src:'leumi',amt:95,date:'03/06',day:3},
+// ── CATEGORIES ──────────────────────────────────────────
+const CATS=[
+  {name:'מזון',ic:'🛒',color:'#00b894',bg:'rgba(0,184,148,.15)'},
+  {name:'רכב',ic:'🚗',color:'#0984e3',bg:'rgba(9,132,227,.15)'},
+  {name:'בילוי',ic:'🍕',color:'#e17055',bg:'rgba(225,112,85,.15)'},
+  {name:'בריאות',ic:'💊',color:'#a855f7',bg:'rgba(168,85,247,.15)'},
+  {name:'תקשורת',ic:'📱',color:'#6d66e8',bg:'rgba(109,102,232,.2)'},
+  {name:'ביגוד',ic:'👗',color:'#f59e0b',bg:'rgba(245,158,11,.15)'},
+  {name:'דיור',ic:'🏠',color:'#f59e0b',bg:'rgba(245,158,11,.15)'},
+  {name:'חינוך',ic:'📚',color:'#0984e3',bg:'rgba(9,132,227,.15)'},
+  {name:'טיפוח',ic:'💈',color:'#a855f7',bg:'rgba(168,85,247,.15)'},
+  {name:'שירותים',ic:'💡',color:'#606080',bg:'rgba(96,96,128,.15)'},
+  {name:'תחבורה',ic:'🚕',color:'#0984e3',bg:'rgba(9,132,227,.15)'},
+  {name:'אחר',ic:'📦',color:'#606080',bg:'rgba(96,96,128,.15)'},
 ];
 
-const catColors={מזון:'#00b894',רכב:'#0984e3',בילוי:'#e17055',בריאות:'#a855f7',תקשורת:'#6d66e8',ביגוד:'#f59e0b',תחבורה:'#0984e3',טיפוח:'#a855f7',חינוך:'#0984e3',דיור:'#f59e0b',שירותים:'#606080'};
+// ── STORAGE ──────────────────────────────────────────
+function load(key,def){try{return JSON.parse(localStorage.getItem(key))||def}catch{return def}}
+function save(key,val){localStorage.setItem(key,JSON.stringify(val))}
 
-const budgets=JSON.parse(localStorage.getItem('budgets')||'null')||[
-  {ic:'🏠',name:'דיור',budget:5500,spent:5500,color:'#f59e0b'},
-  {ic:'🛒',name:'מזון',budget:3000,spent:2580,color:'#00b894'},
-  {ic:'🚗',name:'רכב',budget:2000,spent:1680,color:'#0984e3'},
-  {ic:'🍕',name:'בילוי',budget:2000,spent:2200,color:'#e17055'},
-  {ic:'💊',name:'בריאות',budget:1000,spent:760,color:'#a855f7'},
-  {ic:'📱',name:'תקשורת',budget:500,spent:310,color:'#6d66e8'},
-  {ic:'👗',name:'ביגוד',budget:800,spent:880,color:'#f59e0b'},
-  {ic:'💡',name:'שירותים',budget:1200,spent:870,color:'#606080'},
-];
-
-const months6=['ינואר','פברואר','מרץ','אפריל','מאי','יוני'];
-const income6=[21800,22100,22400,21900,22200,22400];
-const expense6=[19200,17800,14100,18600,16200,17850];
+let txns=load('txns',[]);
+let incomes=load('incomes',[]);
+let budgets=load('budgets',CATS.map(c=>({name:c.name,budget:0})));
+let settings=load('settings',{name:'',currency:'₪'});
 
 // ── NAV ──────────────────────────────────────────
 function showScreen(name,el){
@@ -322,501 +250,406 @@ function showScreen(name,el){
   document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
   document.getElementById('screen-'+name).style.display='block';
   el.classList.add('active');
-  document.getElementById('screen-'+name).scrollTop=0;
+  if(name==='dashboard')buildDashboard();
+  if(name==='expenses')buildExpenses();
+  if(name==='budget')buildBudget();
+  if(name==='reports')buildReports();
+  if(name==='settings')buildSettings();
 }
 
-// ── TOAST ──────────────────────────────────────────
-function showToast(msg){
+function closeModal(id){document.getElementById(id).classList.remove('show')}
+function openModal(id){document.getElementById(id).classList.add('show')}
+
+function showToast(msg,err){
   const t=document.getElementById('toast');
-  t.textContent=msg;t.classList.add('show');
+  t.textContent=msg;
+  t.classList.toggle('err',!!err);
+  t.classList.add('show');
   setTimeout(()=>t.classList.remove('show'),2500);
+}
+
+// ── NUMPAD ──────────────────────────────────────────
+let expAmount='';
+const numpadEl=document.getElementById('numpad');
+['7','8','9','4','5','6','1','2','3','.','0','⌫'].forEach(k=>{
+  const d=document.createElement('div');
+  d.className='nk'+(k==='⌫'?' del':'')+(k==='.'?' action':'');
+  d.textContent=k;
+  d.onclick=()=>{
+    if(k==='⌫')expAmount=expAmount.slice(0,-1);
+    else if(k==='.'){if(!expAmount.includes('.'))expAmount+=k}
+    else{if(expAmount.length<8)expAmount+=k}
+    document.getElementById('exp-display').textContent=expAmount||'0';
+  };
+  numpadEl.appendChild(d);
+});
+
+// ── CAT GRID ──────────────────────────────────────────
+let selCat=CATS[0].name;
+const catGridEl=document.getElementById('cat-grid');
+CATS.forEach(c=>{
+  const d=document.createElement('div');
+  d.className='cat-btn'+(c.name===selCat?' sel':'');
+  d.innerHTML=`<div class="cat-btn-ic" style="background:${c.bg}">${c.ic}</div><div class="cat-btn-lbl">${c.name}</div>`;
+  d.onclick=()=>{selCat=c.name;document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('sel'));d.classList.add('sel')};
+  catGridEl.appendChild(d);
+});
+
+// ── SAVE EXPENSE ──────────────────────────────────────────
+function saveExpense(){
+  const amt=parseFloat(expAmount);
+  const name=document.getElementById('exp-name').value.trim();
+  const src=document.getElementById('exp-src').value;
+  if(!amt||amt<=0){showToast('הכנס סכום',true);return}
+  if(!name){showToast('הכנס שם',true);return}
+  const cat=CATS.find(c=>c.name===selCat)||CATS[0];
+  txns.unshift({id:Date.now(),name,amt,cat:cat.name,ic:cat.ic,bg:cat.bg,src,date:new Date().toLocaleDateString('he-IL')});
+  save('txns',txns);
+  expAmount='';
+  document.getElementById('exp-display').textContent='0';
+  document.getElementById('exp-name').value='';
+  closeModal('modal-expense');
+  buildDashboard();
+  showToast('הוצאה נשמרה ✓');
+}
+
+// ── SAVE INCOME ──────────────────────────────────────────
+function saveIncome(){
+  const amt=parseFloat(document.getElementById('inc-amount').value);
+  const src=document.getElementById('inc-source').value.trim()||'הכנסה';
+  if(!amt||amt<=0){showToast('הכנס סכום',true);return}
+  incomes.unshift({id:Date.now(),amt,src,date:new Date().toLocaleDateString('he-IL')});
+  save('incomes',incomes);
+  document.getElementById('inc-amount').value='';
+  document.getElementById('inc-source').value='';
+  closeModal('modal-income');
+  buildDashboard();
+  showToast('הכנסה נשמרה ✓');
 }
 
 // ── DASHBOARD ──────────────────────────────────────────
 function buildDashboard(){
   const el=document.getElementById('screen-dashboard');
-  const cats={};
-  txns.forEach(t=>{cats[t.cat]=(cats[t.cat]||0)+t.amt});
+  const now=new Date();
+  const month=now.getMonth();const year=now.getFullYear();
+  const monthTxns=txns.filter(t=>{const d=new Date(t.id);return d.getMonth()===month&&d.getFullYear()===year});
+  const monthInc=incomes.filter(t=>{const d=new Date(t.id);return d.getMonth()===month&&d.getFullYear()===year});
+  const totalExp=monthTxns.reduce((s,t)=>s+t.amt,0);
+  const totalInc=monthInc.reduce((s,t)=>s+t.amt,0);
+  const saving=totalInc-totalExp;
+  const name=settings.name||'';
+  const monthName=['ינואר','פברואר','מרץ','אפריל','מאי','יוני','יולי','אוגוסט','ספטמבר','אוקטובר','נובמבר','דצמבר'][month];
+
+  const cats={};monthTxns.forEach(t=>{cats[t.cat]=(cats[t.cat]||0)+t.amt});
   const topCats=Object.entries(cats).sort((a,b)=>b[1]-a[1]).slice(0,5);
-  const total=txns.reduce((s,t)=>s+t.amt,0);
   const maxCat=topCats[0]?.[1]||1;
 
   el.innerHTML=`
   <div class="topbar">
     <div class="topbar-row">
-      <div><div style="font-size:13px;opacity:.7">שלום,</div><div style="font-size:18px;font-weight:800">ישראל 👋</div></div>
-      <div class="avatar">י</div>
+      <div><div style="font-size:13px;opacity:.7">שלום${name?' '+name:''},</div><div style="font-size:18px;font-weight:800">BOX3.0 👋</div></div>
+      <div style="font-size:12px;opacity:.6">${monthName} ${year}</div>
     </div>
-    <div style="font-size:12px;opacity:.55;margin-top:2px">יוני 2025 · עדכון אחרון: היום</div>
   </div>
 
   <div class="kpi-grid">
-    <div class="kpi">
+    <div class="kpi" onclick="openModal('modal-income')" style="cursor:pointer">
       <div class="kpi-icon">💰</div>
-      <div class="kpi-lbl">הכנסה</div>
-      <div class="kpi-val" style="color:#00b894">₪22,400</div>
-      <span class="kpi-badge" style="background:rgba(0,184,148,.15);color:#00b894">↑ 3.2%</span>
+      <div class="kpi-lbl">הכנסות</div>
+      <div class="kpi-val" style="color:#00b894">${totalInc>0?'₪'+totalInc.toLocaleString():'—'}</div>
+      <div style="font-size:10px;color:var(--text3);margin-top:3px">+ הוסף הכנסה</div>
     </div>
     <div class="kpi">
       <div class="kpi-icon">💸</div>
       <div class="kpi-lbl">הוצאות</div>
-      <div class="kpi-val" style="color:#e17055">₪17,850</div>
-      <span class="kpi-badge" style="background:rgba(225,112,85,.15);color:#e17055">↑ 8.1%</span>
+      <div class="kpi-val" style="color:#e17055">${totalExp>0?'₪'+totalExp.toLocaleString():'—'}</div>
+      <div style="font-size:10px;color:var(--text3);margin-top:3px">${monthTxns.length} עסקאות</div>
     </div>
     <div class="kpi">
       <div class="kpi-icon">🏦</div>
       <div class="kpi-lbl">חיסכון</div>
-      <div class="kpi-val" style="color:#0984e3">₪4,550</div>
-      <span class="kpi-badge" style="background:rgba(9,132,227,.15);color:#0984e3">20.3%</span>
+      <div class="kpi-val" style="color:${saving>=0?'#0984e3':'#e17055'}">${totalInc>0||totalExp>0?'₪'+saving.toLocaleString():'—'}</div>
+      <div style="font-size:10px;color:var(--text3);margin-top:3px">${totalInc>0?Math.round(saving/totalInc*100)+'% מההכנסה':''}</div>
     </div>
     <div class="kpi">
-      <div class="kpi-icon">💳</div>
-      <div class="kpi-lbl">אשראי</div>
-      <div class="kpi-val" style="color:#a855f7">₪3,200</div>
-      <span class="kpi-badge" style="background:rgba(168,85,247,.15);color:#a855f7">15/7</span>
+      <div class="kpi-icon">📅</div>
+      <div class="kpi-lbl">ממוצע יומי</div>
+      <div class="kpi-val" style="color:#a855f7">${totalExp>0?'₪'+Math.round(totalExp/now.getDate()).toLocaleString():'—'}</div>
+      <div style="font-size:10px;color:var(--text3);margin-top:3px">יום ${now.getDate()} לחודש</div>
     </div>
   </div>
 
-  <div class="sec">
-    <div class="sec-hdr"><h2>הוצאות לפי קטגוריה</h2></div>
+  ${topCats.length?`<div class="sec">
+    <div class="sec-hdr"><h2>לפי קטגוריה</h2></div>
     <div class="card pad">
-      ${topCats.map(([cat,amt])=>`
-      <div class="bar-row">
-        <div class="bar-lbl">${cat}</div>
-        <div class="bar-track"><div class="bar-fill" style="width:0%;background:${catColors[cat]||'#6d66e8'}" data-w="${Math.round(amt/maxCat*100)}%"></div></div>
-        <div class="bar-amt">₪${amt.toLocaleString()}</div>
-      </div>`).join('')}
+      ${topCats.map(([cat,amt])=>{
+        const c=CATS.find(x=>x.name===cat)||{color:'#6d66e8'};
+        return `<div class="bar-row">
+          <div class="bar-lbl">${cat}</div>
+          <div class="bar-track"><div class="bar-fill" style="width:${Math.round(amt/maxCat*100)}%;background:${c.color}"></div></div>
+          <div class="bar-amt">₪${amt.toLocaleString()}</div>
+        </div>`;
+      }).join('')}
     </div>
-  </div>
+  </div>`:`<div class="sec"><div class="card"><div class="empty-state"><div class="ei">📊</div><div class="et">עדיין אין נתונים</div><div class="es">הוסף הוצאה ראשונה בלחיצה על הכפתור למטה</div></div></div></div>`}
 
-  <div class="sec">
-    <div class="sec-hdr"><h2>עסקאות אחרונות</h2><a onclick="document.querySelectorAll('.nav-item')[1].click()">הכל ›</a></div>
+  ${txns.length?`<div class="sec">
+    <div class="sec-hdr"><h2>עסקאות אחרונות</h2><a style="font-size:12px;color:var(--primary-light);cursor:pointer" onclick="document.querySelectorAll('.nav-item')[1].click()">הכל ›</a></div>
     <div class="card">
-      ${txns.slice(0,5).map(t=>`
-      <div class="txn">
+      ${txns.slice(0,5).map(t=>`<div class="txn">
         <div class="txn-ic" style="background:${t.bg}">${t.ic}</div>
-        <div class="txn-info">
-          <div class="txn-name">${t.name}</div>
-          <div class="txn-cat">${t.cat} · ${t.src==='leumi'?'לאומי':t.src==='max'?'מקס':'ישראכרט'}</div>
-        </div>
-        <div>
-          <div class="txn-amt" style="color:#e17055;text-align:left">−₪${t.amt.toLocaleString()}</div>
-          <div class="txn-date">${t.date}</div>
-        </div>
+        <div class="txn-info"><div class="txn-name">${t.name}</div><div class="txn-cat">${t.cat} · ${t.src}</div></div>
+        <div><div class="txn-amt" style="color:#e17055">−₪${t.amt.toLocaleString()}</div><div class="txn-date">${t.date}</div></div>
       </div>`).join('')}
     </div>
-  </div>
+  </div>`:''}
 
-  <div class="sec">
-    <div class="sec-hdr"><h2>פעולות מהירות</h2></div>
-    <div class="qa-grid">
-      <div class="qa" onclick="showToast('מסך הוספת הוצאה')">
-        <div class="qa-ic" style="background:rgba(225,112,85,.15)">➕</div>
-        <div class="qa-lbl">הוצאה</div>
-      </div>
-      <div class="qa" onclick="showToast('ייבוא CSV')">
-        <div class="qa-ic" style="background:rgba(9,132,227,.15)">📥</div>
-        <div class="qa-lbl">ייבוא</div>
-      </div>
-      <div class="qa" onclick="document.querySelectorAll('.nav-item')[4].click()">
-        <div class="qa-ic" style="background:rgba(0,184,148,.15)">📊</div>
-        <div class="qa-lbl">דוחות</div>
-      </div>
-      <div class="qa" onclick="document.querySelectorAll('.nav-item')[3].click()">
-        <div class="qa-ic" style="background:rgba(168,85,247,.15)">🏛️</div>
-        <div class="qa-lbl">פנסיה</div>
-      </div>
-      <div class="qa" onclick="document.querySelectorAll('.nav-item')[2].click()">
-        <div class="qa-ic" style="background:rgba(245,158,11,.15)">🎯</div>
-        <div class="qa-lbl">תקציב</div>
-      </div>
-    </div>
+  <div style="padding:0 14px 14px">
+    <button class="fab" onclick="openModal('modal-expense')">+ הוסף הוצאה</button>
   </div>`;
-
-  setTimeout(()=>{
-    el.querySelectorAll('.bar-fill[data-w]').forEach(b=>{b.style.width=b.dataset.w});
-  },100);
 }
 
 // ── EXPENSES ──────────────────────────────────────────
-let expCat='הכל',expSrc='all',expMonth='יוני 2025';
+let filterCat='הכל';
 function buildExpenses(){
   const el=document.getElementById('screen-expenses');
   const cats=['הכל',...new Set(txns.map(t=>t.cat))];
-  let list=txns.filter(t=>{
-    if(expSrc!=='all'&&t.src!==expSrc)return false;
-    if(expCat!=='הכל'&&t.cat!==expCat)return false;
-    return true;
-  });
+  let list=filterCat==='הכל'?txns:txns.filter(t=>t.cat===filterCat);
   const total=list.reduce((s,t)=>s+t.amt,0);
-  const cats2={};list.forEach(t=>{cats2[t.cat]=(cats2[t.cat]||0)+t.amt});
-  const topC=Object.entries(cats2).sort((a,b)=>b[1]-a[1]).slice(0,5);
-  const maxC=topC[0]?.[1]||1;
-  const srcLabel={leumi:'לאומי',max:'מקס',isracard:'ישראכרט'};
 
   el.innerHTML=`
   <div class="topbar">
     <div class="topbar-row">
       <div style="font-size:17px;font-weight:700">הוצאות</div>
-      <div style="font-size:13px;color:rgba(255,255,255,.6)">₪${total.toLocaleString()}</div>
-    </div>
-    <div style="display:flex;gap:6px;margin-top:4px">
-      ${['all','leumi','max','isracard'].map(s=>`
-      <button onclick="expSrc='${s}';buildExpenses()" style="flex:1;padding:6px;border-radius:8px;font-size:11px;font-weight:700;border:none;font-family:inherit;cursor:pointer;background:${expSrc===s?'rgba(255,255,255,.9)':'rgba(255,255,255,.12)'};color:${expSrc===s?'#4338ca':'rgba(255,255,255,.7)'}">${s==='all'?'הכל':s==='leumi'?'לאומי':s==='max'?'מקס':'ישראכרט'}</button>`).join('')}
+      <div style="font-size:14px;font-weight:700;color:rgba(255,255,255,.8)">${total>0?'₪'+total.toLocaleString():''}</div>
     </div>
   </div>
   <div style="padding:14px">
-    <div class="search"><span style="font-size:16px;color:var(--text3)">🔍</span><input type="text" placeholder="חיפוש עסקה..." id="exp-search" oninput="filterExpenses(this.value)"></div>
-    <div class="chips">${cats.map(c=>`<button class="chip${c===expCat?' active':''}" onclick="expCat='${c}';buildExpenses()">${c}</button>`).join('')}</div>
-    ${topC.length?`<div class="card pad" style="margin-bottom:12px">
-      ${topC.map(([cat,amt])=>`<div class="bar-row">
-        <div class="bar-lbl">${cat}</div>
-        <div class="bar-track"><div class="bar-fill" style="width:0%;background:${catColors[cat]||'#6d66e8'}" data-w="${Math.round(amt/maxC*100)}%"></div></div>
-        <div class="bar-amt">₪${amt.toLocaleString()}</div>
-      </div>`).join('')}
-    </div>`:''}
-    <div class="card" id="exp-list">
-      ${list.map(t=>`<div class="txn" data-name="${t.name.toLowerCase()}" data-cat="${t.cat}">
+    <div class="search"><span style="font-size:16px;color:var(--text3)">🔍</span><input type="text" placeholder="חיפוש..." oninput="searchExp(this.value)"></div>
+    <div class="chips">${cats.map(c=>`<button class="chip${c===filterCat?' active':''}" onclick="filterCat='${c}';buildExpenses()">${c}</button>`).join('')}</div>
+    ${list.length?`<div class="card" id="exp-list">
+      ${list.map(t=>`<div class="txn" data-name="${t.name.toLowerCase()}" data-id="${t.id}">
         <div class="txn-ic" style="background:${t.bg}">${t.ic}</div>
-        <div class="txn-info">
-          <div class="txn-name">${t.name}</div>
-          <div class="txn-cat">${t.cat} · ${srcLabel[t.src]}</div>
-        </div>
-        <div>
-          <div class="txn-amt" style="color:#e17055;text-align:left">−₪${t.amt.toLocaleString()}</div>
+        <div class="txn-info"><div class="txn-name">${t.name}</div><div class="txn-cat">${t.cat} · ${t.src}</div></div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:3px">
+          <div class="txn-amt" style="color:#e17055">−₪${t.amt.toLocaleString()}</div>
           <div class="txn-date">${t.date}</div>
+          <div onclick="deleteTxn(${t.id})" style="font-size:10px;color:var(--text3);cursor:pointer">מחק</div>
         </div>
       </div>`).join('')}
-    </div>
+    </div>`:`<div class="card"><div class="empty-state"><div class="ei">🧾</div><div class="et">אין עסקאות</div><div class="es">לחץ על + למטה כדי להוסיף הוצאה ראשונה</div></div></div>`}
+    <div style="height:14px"></div>
+    <button class="fab" onclick="openModal('modal-expense')">+ הוסף הוצאה</button>
   </div>`;
-  setTimeout(()=>{el.querySelectorAll('.bar-fill[data-w]').forEach(b=>{b.style.width=b.dataset.w})},100);
 }
 
-function filterExpenses(q){
+function searchExp(q){
   document.querySelectorAll('#exp-list .txn').forEach(t=>{
     t.style.display=(!q||t.dataset.name.includes(q.toLowerCase()))?'flex':'none';
   });
 }
 
+function deleteTxn(id){
+  if(!confirm('למחוק עסקה זו?'))return;
+  txns=txns.filter(t=>t.id!==id);
+  save('txns',txns);
+  buildExpenses();
+  buildDashboard();
+  showToast('נמחק ✓');
+}
+
 // ── BUDGET ──────────────────────────────────────────
-let editBudgetIdx=null;
+let editBudgetCat=null;
 function buildBudget(){
   const el=document.getElementById('screen-budget');
-  const total=budgets.reduce((s,b)=>s+b.budget,0);
-  const spent=budgets.reduce((s,b)=>s+b.spent,0);
-  const pctMaster=Math.round(spent/total*100);
-  const over=budgets.filter(b=>b.spent>b.budget);
+  const now=new Date();const m=now.getMonth();const y=now.getFullYear();
+  const monthTxns=txns.filter(t=>{const d=new Date(t.id);return d.getMonth()===m&&d.getFullYear()===y});
+  const cats={};monthTxns.forEach(t=>{cats[t.cat]=(cats[t.cat]||0)+t.amt});
+  const totalBudget=budgets.reduce((s,b)=>s+b.budget,0);
+  const totalSpent=Object.values(cats).reduce((s,v)=>s+v,0);
 
   el.innerHTML=`
   <div class="topbar">
     <div class="topbar-row">
-      <div style="font-size:17px;font-weight:700">תקציב — יוני 2025</div>
-      <button onclick="openBudgetModal(null)" style="background:rgba(255,255,255,.15);border:none;color:#fff;border-radius:20px;padding:6px 14px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit">+ קטגוריה</button>
+      <div style="font-size:17px;font-weight:700">תקציב חודשי</div>
+      ${totalBudget>0?`<div style="font-size:12px;color:rgba(255,255,255,.7)">₪${totalSpent.toLocaleString()} / ₪${totalBudget.toLocaleString()}</div>`:''}
     </div>
-    <div style="background:rgba(0,0,0,.25);border-radius:14px;padding:14px;margin-top:4px">
-      <div style="display:flex;justify-content:space-between;margin-bottom:8px">
-        <div><div style="font-size:11px;opacity:.6">הוצאת עד עכשיו</div><div style="font-size:24px;font-weight:800">₪${spent.toLocaleString()}</div><div style="font-size:11px;opacity:.5">מתוך ₪${total.toLocaleString()}</div></div>
-        <div style="text-align:left"><div style="font-size:11px;opacity:.6">נשאר</div><div style="font-size:24px;font-weight:800;color:#36d399">₪${(total-spent).toLocaleString()}</div><div style="font-size:11px;opacity:.5">12 ימים לסוף</div></div>
-      </div>
-      <div style="height:8px;background:rgba(255,255,255,.1);border-radius:4px;overflow:hidden;margin-bottom:8px">
-        <div id="master-bar" style="height:100%;border-radius:4px;background:linear-gradient(90deg,#36d399,#f59e0b);width:0%;transition:width 1.2s ease"></div>
-      </div>
-      <div style="display:flex;justify-content:space-between">
-        <div style="text-align:center"><div style="font-size:13px;font-weight:700">${pctMaster}%</div><div style="font-size:10px;opacity:.5">נוצל</div></div>
-        <div style="text-align:center"><div style="font-size:13px;font-weight:700">${over.length}</div><div style="font-size:10px;opacity:.5">חריגות</div></div>
-        <div style="text-align:center"><div style="font-size:13px;font-weight:700">₪${Math.round((total-spent)/12)}</div><div style="font-size:10px;opacity:.5">מקס/יום</div></div>
-      </div>
-    </div>
+    ${totalBudget>0?`<div style="height:6px;background:rgba(255,255,255,.15);border-radius:3px;overflow:hidden;margin-top:10px">
+      <div style="height:100%;border-radius:3px;background:linear-gradient(90deg,#36d399,#f59e0b);width:${Math.min(Math.round(totalSpent/totalBudget*100),100)}%;transition:width 1s ease"></div>
+    </div>`:''}
   </div>
   <div style="padding:14px">
-    ${over.length?`<div class="alert"><div style="font-size:20px">⚠️</div><div class="alert-text"><div class="alert-title">${over.length} קטגוריות חרגו</div>${over.map(b=>`${b.name}: חריגה של ₪${(b.spent-b.budget).toLocaleString()}`).join(' · ')}</div></div>`:''}
-    <div id="budget-list"></div>
+    ${budgets.map(b=>{
+      const spent=cats[b.name]||0;
+      const cat=CATS.find(c=>c.name===b.name)||{ic:'📦',color:'#6d66e8',bg:'rgba(109,102,232,.15)'};
+      const pct=b.budget>0?Math.min(Math.round(spent/b.budget*100),100):0;
+      const over=b.budget>0&&spent>b.budget;
+      const barColor=over?'#e17055':pct>80?'#f59e0b':cat.color;
+      return `<div class="budget-item" onclick="openBudgetModal('${b.name}',${b.budget})">
+        <div class="bi-top">
+          <div class="bi-icon" style="background:${cat.bg}">${cat.ic}</div>
+          <div style="flex:1"><div class="bi-name">${b.name}</div><div class="bi-meta">${b.budget>0?pct+'% מהתקציב':'לחץ להגדרת תקציב'}</div></div>
+          <div style="text-align:left">
+            <div class="bi-spent" style="color:${over?'#e17055':cat.color}">₪${spent.toLocaleString()}</div>
+            <div class="bi-budget">${b.budget>0?'מתוך ₪'+b.budget.toLocaleString():'לא הוגדר'}</div>
+          </div>
+        </div>
+        ${b.budget>0?`<div class="bi-track"><div class="bi-fill" style="width:${pct}%;background:${barColor}"></div></div>
+        <div class="bi-footer">
+          <div style="font-weight:600;color:${over?'#e17055':'#36d399'}">${over?'חריגה ₪'+(spent-b.budget).toLocaleString():'נשאר ₪'+(b.budget-spent).toLocaleString()}</div>
+          <div style="color:var(--text3)">יעד: ₪${b.budget.toLocaleString()}</div>
+        </div>`:''}
+      </div>`;
+    }).join('')}
+  </div>
+
+  <div class="modal-overlay" id="modal-budget">
+    <div class="modal" onclick="event.stopPropagation()">
+      <div class="modal-handle"></div>
+      <div class="modal-title" id="bm-title">תקציב קטגוריה</div>
+      <div class="modal-field">
+        <label class="modal-label">תקציב חודשי (₪)</label>
+        <input class="modal-input" id="bm-amount" type="number" placeholder="0" inputmode="numeric">
+      </div>
+      <div class="modal-btns">
+        <button class="modal-cancel" onclick="document.getElementById('modal-budget').classList.remove('show')">ביטול</button>
+        <button class="modal-save" onclick="saveBudget()">שמור</button>
+      </div>
+    </div>
   </div>`;
-
-  setTimeout(()=>{document.getElementById('master-bar').style.width=pctMaster+'%'},100);
-  renderBudgetList();
 }
 
-function renderBudgetList(){
-  const el=document.getElementById('budget-list');
-  if(!el)return;
-  el.innerHTML=budgets.map((b,i)=>{
-    const pct=Math.min(Math.round(b.spent/b.budget*100),100);
-    const over=b.spent>b.budget;
-    const barColor=over?'#e17055':pct>80?'#f59e0b':b.color;
-    const remain=b.budget-b.spent;
-    return `<div class="budget-item" onclick="openBudgetModal(${i})">
-      <div class="bi-top">
-        <div class="bi-icon" style="background:${b.color}22">${b.ic}</div>
-        <div class="bi-info">
-          <div class="bi-name">${b.name}</div>
-          <div class="bi-meta">${pct}%${over?' · <span style="color:#e17055">חריגה!</span>':''}</div>
-        </div>
-        <div class="bi-right">
-          <div class="bi-spent" style="color:${over?'#e17055':b.color}">₪${b.spent.toLocaleString()}</div>
-          <div class="bi-budget">מתוך ₪${b.budget.toLocaleString()}</div>
-        </div>
-      </div>
-      <div class="bi-track"><div class="bi-fill" style="width:${pct}%;background:${barColor}"></div></div>
-      <div class="bi-footer">
-        <div class="bi-remain" style="color:${over?'#e17055':'#36d399'}">${over?'חריגה ₪'+Math.abs(remain).toLocaleString():'נשאר ₪'+remain.toLocaleString()}</div>
-        <div style="font-size:11px;color:var(--text3)">יעד: ₪${b.budget.toLocaleString()}</div>
-      </div>
-    </div>`;
-  }).join('');
+function openBudgetModal(cat,current){
+  editBudgetCat=cat;
+  document.getElementById('bm-title').textContent='תקציב — '+cat;
+  document.getElementById('bm-amount').value=current||'';
+  document.getElementById('modal-budget').classList.add('show');
 }
 
-function openBudgetModal(idx){
-  editBudgetIdx=idx;
-  const b=idx!==null?budgets[idx]:null;
-  document.getElementById('modal-title').textContent=b?'עריכת '+b.name:'קטגוריה חדשה';
-  const v=b?b.budget:1500;
-  document.getElementById('modal-slider').value=v;
-  document.getElementById('modal-val').textContent='₪'+v.toLocaleString();
-  document.getElementById('modal').classList.add('show');
-}
-
-function saveModal(){
-  const v=parseInt(document.getElementById('modal-slider').value);
-  if(editBudgetIdx!==null){budgets[editBudgetIdx].budget=v}
-  localStorage.setItem('budgets',JSON.stringify(budgets));
-  document.getElementById('modal').classList.remove('show');
-  renderBudgetList();
+function saveBudget(){
+  const v=parseFloat(document.getElementById('bm-amount').value)||0;
+  const idx=budgets.findIndex(b=>b.name===editBudgetCat);
+  if(idx>=0)budgets[idx].budget=v;
+  save('budgets',budgets);
+  document.getElementById('modal-budget').classList.remove('show');
+  buildBudget();
   showToast('תקציב עודכן ✓');
 }
 
-function closeModal(e){
-  if(!e||e.target===document.getElementById('modal'))
-    document.getElementById('modal').classList.remove('show');
-}
-
-// ── PENSION ──────────────────────────────────────────
-let pensionTab='funds';
-function buildPension(){
-  const el=document.getElementById('screen-pension');
-  el.innerHTML=`
-  <div class="pension-hdr">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
-      <div style="font-size:17px;font-weight:700">פנסיה וחיסכון</div>
-    </div>
-    <div class="retire-box">
-      <div class="retire-row">
-        <div><div class="retire-lbl">סה"כ חסכונות</div><div class="retire-val">₪312,400</div><div class="retire-sub">נכון ליוני 2025</div></div>
-        <div style="text-align:left"><div class="retire-lbl">יעד לפרישה</div><div class="retire-val" style="color:#36d399">₪2.1M</div><div class="retire-sub">גיל 67 · עוד 27 שנה</div></div>
-      </div>
-      <div class="retire-track"><div id="retire-bar" class="retire-fill" style="width:0%"></div></div>
-      <div class="retire-stats">
-        ${[['14.9%','הושג'],['₪1,850','הפרשה/חודש'],['6.8%','תשואה שנתית'],['67','גיל פרישה']].map(([v,l])=>`<div><div class="rs-val">${v}</div><div class="rs-lbl">${l}</div></div>`).join('')}
-      </div>
-    </div>
-  </div>
-  <div style="padding:14px">
-    <div class="tabs">
-      <button class="tab${pensionTab==='funds'?' active':''}" onclick="pensionTab='funds';renderPensionTab()">קרנות</button>
-      <button class="tab${pensionTab==='proj'?' active':''}" onclick="pensionTab='proj';renderPensionTab()">תחזית</button>
-      <button class="tab${pensionTab==='ins'?' active':''}" onclick="pensionTab='ins';renderPensionTab()">ביטוחים</button>
-    </div>
-    <div id="pension-tab-content"></div>
-  </div>`;
-  setTimeout(()=>{document.getElementById('retire-bar').style.width='14.9%'},100);
-  renderPensionTab();
-}
-
-function renderPensionTab(){
-  document.querySelectorAll('#screen-pension .tab').forEach((t,i)=>{
-    t.classList.toggle('active',['funds','proj','ins'][i]===pensionTab);
-  });
-  const el=document.getElementById('pension-tab-content');
-  if(!el)return;
-  if(pensionTab==='funds'){
-    el.innerHTML=[
-      {ic:'🏛️',bg:'rgba(9,132,227,.15)',name:'קרן פנסיה',company:'מנורה מבטחים',val:'₪184,200',ret:'↑ 7.2%',retC:'#36d399',bar:59,barC:'#0984e3',details:[['₪1,100','הפרשה/חודש'],['מניות','מסלול'],['2018','שנת פתיחה']]},
-      {ic:'📈',bg:'rgba(0,184,148,.15)',name:'קרן השתלמות',company:'הראל פיננסים',val:'₪84,200',ret:'↑ 6.4%',retC:'#36d399',bar:27,barC:'#00b894',details:[['₪550','הפרשה/חודש'],['מניות','מסלול'],['2027','נזיל']]},
-      {ic:'🏦',bg:'rgba(168,85,247,.15)',name:'קופת גמל',company:'מיטב דש',val:'₪44,000',ret:'↑ 5.9%',retC:'#36d399',bar:14,barC:'#a855f7',details:[['₪200','הפרשה/חודש'],['כללי','מסלול'],['נזיל','סטטוס']]},
-    ].map(f=>`<div class="fund-card">
-      <div class="fc-top">
-        <div class="fc-icon" style="background:${f.bg}">${f.ic}</div>
-        <div style="flex:1"><div class="fc-name">${f.name}</div><div class="fc-company">${f.company}</div></div>
-        <div style="text-align:left"><div class="fc-val">${f.val}</div><div class="fc-return" style="color:${f.retC}">${f.ret} השנה</div></div>
-      </div>
-      <div class="bar-track" style="margin-bottom:4px"><div class="bar-fill" style="width:${f.bar}%;background:${f.barC}"></div></div>
-      <div class="fc-details">
-        ${f.details.map(([v,l])=>`<div class="fcd"><div class="fcd-val">${v}</div><div class="fcd-lbl">${l}</div></div>`).join('')}
-      </div>
-    </div>`).join('');
-  } else if(pensionTab==='proj'){
-    el.innerHTML=`<div class="card pad">
-      <div style="font-size:13px;font-weight:700;margin-bottom:14px">תחזית לפרישה</div>
-      <div class="slider-wrap">
-        <div class="slider-lbl"><span>גיל פרישה</span><span id="p-age-v">67</span></div>
-        <input type="range" min="60" max="70" value="67" id="p-age" oninput="calcProj()">
-      </div>
-      <div class="slider-wrap">
-        <div class="slider-lbl"><span>תשואה שנתית</span><span id="p-ret-v">6%</span></div>
-        <input type="range" min="2" max="12" step="0.5" value="6" id="p-ret" oninput="calcProj()">
-      </div>
-      <div class="slider-wrap">
-        <div class="slider-lbl"><span>הפרשה נוספת</span><span id="p-add-v">₪0</span></div>
-        <input type="range" min="0" max="3000" step="100" value="0" id="p-add" oninput="calcProj()">
-      </div>
-      <div class="proj-result">
-        <div class="proj-lbl">סכום צפוי בפרישה</div>
-        <div class="proj-val" id="p-total">₪1,840,000</div>
-        <div class="proj-sub" id="p-sub">קצבה חודשית משוערת: ₪6,130</div>
-        <div class="proj-row">
-          <div><div class="pi-val" id="p-years">27</div><div class="pi-lbl">שנות חיסכון</div></div>
-          <div><div class="pi-val" id="p-gap" style="color:#f59e0b">₪260K חסר</div><div class="pi-lbl">ליעד ₪2.1M</div></div>
-          <div><div class="pi-val" id="p-monthly">₪6,130</div><div class="pi-lbl">קצבה/חודש</div></div>
-        </div>
-      </div>
-    </div>`;
-  } else {
-    el.innerHTML=`<div class="card">
-      ${[
-        {ic:'❤️',bg:'rgba(225,112,85,.15)',name:'ביטוח חיים',sub:'כלל ביטוח · מתחדש דצמבר 2025',p:'₪180/חודש',c:'כיסוי ₪1.5M',dot:'#36d399'},
-        {ic:'🏥',bg:'rgba(0,184,148,.15)',name:'ביטוח בריאות',sub:'מכבי זהב · עם משפחה',p:'₪320/חודש',c:'כיסוי מקיף',dot:'#36d399'},
-        {ic:'🦽',bg:'rgba(168,85,247,.15)',name:'ביטוח סיעוד',sub:'הפניקס · פוליסה אישית',p:'₪95/חודש',c:'₪8,000/חודש',dot:'#36d399'},
-        {ic:'🏠',bg:'rgba(245,158,11,.15)',name:'ביטוח דירה',sub:'איילון · מתחדש ספטמבר 2025',p:'₪65/חודש',c:'מתחדש בקרוב',dot:'#f59e0b'},
-      ].map(i=>`<div class="ins-row">
-        <div class="ins-ic" style="background:${i.bg}">${i.ic}</div>
-        <div style="flex:1"><div class="ins-name">${i.name} <span style="width:7px;height:7px;border-radius:50%;background:${i.dot};display:inline-block;margin-right:3px"></span></div><div class="ins-sub">${i.sub}</div></div>
-        <div><div class="ins-premium">${i.p}</div><div class="ins-coverage" style="color:${i.dot==='#f59e0b'?'#f59e0b':'var(--text2)'}">${i.c}</div></div>
-      </div>`).join('')}
-      <div style="padding:12px 14px;border-top:1px solid var(--border);display:flex;justify-content:space-between;font-size:13px">
-        <span style="color:var(--text2)">סה"כ חודשי</span><span style="font-weight:700">₪660/חודש</span>
-      </div>
-    </div>`;
-  }
-}
-
-function calcProj(){
-  const age=parseInt(document.getElementById('p-age').value);
-  const ret=parseFloat(document.getElementById('p-ret').value)/100;
-  const add=parseInt(document.getElementById('p-add').value);
-  const years=age-40;
-  const monthly=1850+add;
-  const r=ret/12;
-  const m=years*12;
-  let total=312400*Math.pow(1+ret,years)+monthly*((Math.pow(1+r,m)-1)/r);
-  total=Math.round(total/1000)*1000;
-  const pension=Math.round(total/300);
-  const gap=2100000-total;
-  document.getElementById('p-age-v').textContent=age;
-  document.getElementById('p-ret-v').textContent=parseFloat(document.getElementById('p-ret').value).toFixed(1)+'%';
-  document.getElementById('p-add-v').textContent='₪'+add.toLocaleString();
-  document.getElementById('p-total').textContent='₪'+(total/1000).toFixed(0)+'K';
-  document.getElementById('p-sub').textContent='קצבה חודשית משוערת: ₪'+pension.toLocaleString();
-  document.getElementById('p-years').textContent=years;
-  document.getElementById('p-monthly').textContent='₪'+pension.toLocaleString();
-  const gEl=document.getElementById('p-gap');
-  gEl.textContent=gap>0?'₪'+(gap/1000).toFixed(0)+'K חסר':'יעד הושג! ✓';
-  gEl.style.color=gap>0?'#f59e0b':'#36d399';
-}
-
 // ── REPORTS ──────────────────────────────────────────
-let reportTab='trend';
 function buildReports(){
   const el=document.getElementById('screen-reports');
-  const maxV=Math.max(...income6);
+  const now=new Date();
+  const months=[];
+  for(let i=5;i>=0;i--){
+    const d=new Date(now.getFullYear(),now.getMonth()-i,1);
+    months.push({m:d.getMonth(),y:d.getFullYear(),label:['ינואר','פברואר','מרץ','אפריל','מאי','יוני','יולי','אוגוסט','ספטמבר','אוקטובר','נובמבר','דצמבר'][d.getMonth()]});
+  }
+  const monthData=months.map(({m,y,label})=>{
+    const mt=txns.filter(t=>{const d=new Date(t.id);return d.getMonth()===m&&d.getFullYear()===y});
+    const mi=incomes.filter(t=>{const d=new Date(t.id);return d.getMonth()===m&&d.getFullYear()===y});
+    const exp=mt.reduce((s,t)=>s+t.amt,0);
+    const inc=mi.reduce((s,t)=>s+t.amt,0);
+    return {label,exp,inc,saving:inc-exp};
+  });
+  const maxV=Math.max(...monthData.flatMap(d=>[d.exp,d.inc]),1);
+  const totalExp=txns.reduce((s,t)=>s+t.amt,0);
+  const totalInc=incomes.reduce((s,t)=>s+t.amt,0);
+  const cats={};txns.forEach(t=>{cats[t.cat]=(cats[t.cat]||0)+t.amt});
+  const topCats=Object.entries(cats).sort((a,b)=>b[1]-a[1]);
+  const maxCat=topCats[0]?.[1]||1;
+
   el.innerHTML=`
-  <div class="reports-hdr">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
-      <div style="font-size:17px;font-weight:700">דוחות וניתוח</div>
-      <div style="font-size:13px;cursor:pointer" onclick="showToast('ייצוא Excel בקרוב')">📤</div>
-    </div>
-    <div class="period-tabs">
-      ${['3m','6m','1y','הכל'].map(p=>`<button class="ptab${p==='3m'?' active':''}" onclick="this.parentElement.querySelectorAll('.ptab').forEach(t=>t.classList.remove('active'));this.classList.add('active')">${p}</button>`).join('')}
-    </div>
+  <div class="topbar">
+    <div style="font-size:17px;font-weight:700">דוחות</div>
   </div>
   <div style="padding:14px">
     <div class="stat-grid">
-      <div class="stat-card"><div class="stat-icon">📉</div><div class="stat-lbl">ממוצע הוצאות</div><div class="stat-val" style="color:#e17055">₪16,840</div><div class="stat-trend" style="color:#e17055">↑ 4.2% אשתקד</div></div>
-      <div class="stat-card"><div class="stat-icon">💰</div><div class="stat-lbl">ממוצע חיסכון</div><div class="stat-val" style="color:#00b894">₪5,560</div><div class="stat-trend" style="color:#00b894">↑ 12% אשתקד</div></div>
-      <div class="stat-card"><div class="stat-icon">📊</div><div class="stat-lbl">חודש יקר</div><div class="stat-val" style="color:#6d66e8">ינואר</div><div class="stat-trend" style="color:var(--text2)">₪19,200</div></div>
-      <div class="stat-card"><div class="stat-icon">🏆</div><div class="stat-lbl">חודש חסכוני</div><div class="stat-val" style="color:#6d66e8">מרץ</div><div class="stat-trend" style="color:var(--text2)">₪14,100</div></div>
+      <div class="stat-card"><div class="stat-icon">💸</div><div class="stat-lbl">סה"כ הוצאות</div><div class="stat-val" style="color:#e17055">${totalExp>0?'₪'+totalExp.toLocaleString():'—'}</div></div>
+      <div class="stat-card"><div class="stat-icon">💰</div><div class="stat-lbl">סה"כ הכנסות</div><div class="stat-val" style="color:#00b894">${totalInc>0?'₪'+totalInc.toLocaleString():'—'}</div></div>
+      <div class="stat-card"><div class="stat-icon">🏦</div><div class="stat-lbl">חיסכון כולל</div><div class="stat-val" style="color:#0984e3">${totalInc>0||totalExp>0?'₪'+(totalInc-totalExp).toLocaleString():'—'}</div></div>
+      <div class="stat-card"><div class="stat-icon">🧾</div><div class="stat-lbl">סה"כ עסקאות</div><div class="stat-val" style="color:#a855f7">${txns.length}</div></div>
     </div>
-    <div class="tabs">
-      <button class="tab${reportTab==='trend'?' active':''}" onclick="reportTab='trend';renderReportTab()">מגמה</button>
-      <button class="tab${reportTab==='compare'?' active':''}" onclick="reportTab='compare';renderReportTab()">השוואה</button>
-      <button class="tab${reportTab==='insights'?' active':''}" onclick="reportTab='insights';renderReportTab()">תובנות</button>
-    </div>
-    <div id="report-tab-content"></div>
+
+    ${monthData.some(d=>d.exp>0||d.inc>0)?`
+    <div class="card pad" style="margin-bottom:12px">
+      <div style="font-size:13px;font-weight:700;margin-bottom:10px">6 חודשים אחרונים</div>
+      <div style="display:flex;gap:8px;margin-bottom:8px">
+        ${[['rgba(109,102,232,.6)','הכנסה'],['rgba(225,112,85,.6)','הוצאות']].map(([c,l])=>`<div style="display:flex;align-items:center;gap:4px"><div style="width:8px;height:8px;border-radius:2px;background:${c}"></div><span style="font-size:10px;color:var(--text2)">${l}</span></div>`).join('')}
+      </div>
+      <div style="display:flex;align-items:flex-end;gap:5px;height:100px">
+        ${monthData.map(d=>`<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px">
+          <div style="display:flex;gap:2px;align-items:flex-end;width:100%">
+            <div style="flex:1;border-radius:3px 3px 0 0;background:rgba(109,102,232,.6);height:${Math.round(d.inc/maxV*90)}px;min-height:${d.inc>0?3:0}px"></div>
+            <div style="flex:1;border-radius:3px 3px 0 0;background:rgba(225,112,85,.6);height:${Math.round(d.exp/maxV*90)}px;min-height:${d.exp>0?3:0}px"></div>
+          </div>
+          <div style="font-size:9px;color:var(--text2)">${d.label.slice(0,3)}</div>
+        </div>`).join('')}
+      </div>
+    </div>`:''}
+
+    ${topCats.length?`<div class="card pad">
+      <div style="font-size:13px;font-weight:700;margin-bottom:10px">הוצאות לפי קטגוריה</div>
+      ${topCats.map(([cat,amt])=>{
+        const c=CATS.find(x=>x.name===cat)||{color:'#6d66e8'};
+        return `<div class="bar-row">
+          <div class="bar-lbl">${cat}</div>
+          <div class="bar-track"><div class="bar-fill" style="width:${Math.round(amt/maxCat*100)}%;background:${c.color}"></div></div>
+          <div class="bar-amt">₪${amt.toLocaleString()}</div>
+        </div>`;
+      }).join('')}
+    </div>`:`<div class="card"><div class="empty-state"><div class="ei">📊</div><div class="et">אין נתונים עדיין</div><div class="es">הוסף הוצאות כדי לראות דוחות</div></div></div>`}
   </div>`;
-  renderReportTab();
 }
 
-function renderReportTab(){
-  document.querySelectorAll('#screen-reports .tabs .tab').forEach((t,i)=>{
-    t.classList.toggle('active',['trend','compare','insights'][i]===reportTab);
-  });
-  const el=document.getElementById('report-tab-content');
-  if(!el)return;
-  const maxV=Math.max(...income6);
-  if(reportTab==='trend'){
-    el.innerHTML=`<div class="card pad">
-      <div style="font-size:13px;font-weight:700;margin-bottom:4px">הכנסות vs הוצאות</div>
-      <div style="font-size:11px;color:var(--text2);margin-bottom:12px">6 חודשים אחרונים</div>
-      <div style="display:flex;gap:10px;margin-bottom:10px">
-        ${[['rgba(109,102,232,.5)','הכנסה'],['rgba(225,112,85,.5)','הוצאות'],['rgba(0,184,148,.5)','חיסכון']].map(([c,l])=>`<div style="display:flex;align-items:center;gap:4px"><div style="width:8px;height:8px;border-radius:2px;background:${c}"></div><span style="font-size:10px;color:var(--text2)">${l}</span></div>`).join('')}
+// ── SETTINGS ──────────────────────────────────────────
+function buildSettings(){
+  const el=document.getElementById('screen-settings');
+  el.innerHTML=`
+  <div class="topbar">
+    <div style="font-size:17px;font-weight:700">הגדרות</div>
+  </div>
+  <div style="padding:14px">
+    <div class="card pad" style="margin-bottom:12px">
+      <div style="font-size:13px;font-weight:700;margin-bottom:14px;color:var(--text2)">פרטים אישיים</div>
+      <div class="modal-field">
+        <label class="modal-label">השם שלך</label>
+        <input class="modal-input" id="s-name" type="text" placeholder="ישראל ישראלי" value="${settings.name}">
       </div>
-      <div class="bar-chart">
-        ${months6.map((m,i)=>{
-          const iH=Math.round(income6[i]/maxV*100);
-          const eH=Math.round(expense6[i]/maxV*100);
-          const sH=Math.round((income6[i]-expense6[i])/maxV*100);
-          return `<div class="bc-col">
-            <div class="bc-bars">
-              <div class="bc-bar" style="height:${iH}px;background:rgba(109,102,232,.6)"></div>
-              <div class="bc-bar" style="height:${eH}px;background:rgba(225,112,85,.6)"></div>
-              <div class="bc-bar" style="height:${sH}px;background:rgba(0,184,148,.6)"></div>
-            </div>
-            <div class="bc-lbl">${m.slice(0,3)}</div>
-          </div>`;
-        }).join('')}
-      </div>
-    </div>`;
-  } else if(reportTab==='compare'){
-    const cats=[
-      {name:'מזון',cur:2580,prev:2200,color:'#00b894'},
-      {name:'בילוי',cur:2200,prev:1400,color:'#e17055'},
-      {name:'רכב',cur:1680,prev:1900,color:'#0984e3'},
-      {name:'ביגוד',cur:880,prev:300,color:'#f59e0b'},
-      {name:'בריאות',cur:760,prev:820,color:'#a855f7'},
-    ];
-    const maxC=Math.max(...cats.flatMap(c=>[c.cur,c.prev]));
-    el.innerHTML=`<div class="card pad">
-      <div style="font-size:13px;font-weight:700;margin-bottom:10px">קטגוריות — יוני vs מאי</div>
-      <div class="cc-legend">
-        <div class="cc-leg"><div class="cc-dot" style="background:#6d66e8"></div>יוני</div>
-        <div class="cc-leg"><div class="cc-dot" style="background:#404060"></div>מאי</div>
-      </div>
-      ${cats.map(c=>`<div class="cc-row">
-        <div class="cc-lbl">${c.name}</div>
-        <div class="cc-bars">
-          <div class="cc-bar-wrap"><div class="cc-bar" style="width:${Math.round(c.cur/maxC*100)}%;background:${c.color}"></div><span class="cc-num">₪${c.cur.toLocaleString()}</span></div>
-          <div class="cc-bar-wrap"><div class="cc-bar" style="width:${Math.round(c.prev/maxC*100)}%;background:#404060"></div><span class="cc-num">₪${c.prev.toLocaleString()}</span></div>
-        </div>
-      </div>`).join('')}
-    </div>`;
-  } else {
-    el.innerHTML=[
-      {ic:'🔍',title:'הוצאה לא רגילה',desc:'באפריל הוצאת ₪2,400 על ביגוד — פי 3 מהממוצע',badge:'חריגה',bc:'rgba(225,112,85,.15)',bt:'#e17055'},
-      {ic:'📈',title:'החיסכון שלך גדל',desc:'שמרת 24.8% מההכנסה ב-3 חודשים אחרונים — מעל הממוצע המומלץ',badge:'מעולה',bc:'rgba(0,184,148,.15)',bt:'#00b894'},
-      {ic:'🍕',title:'בילוי עולה',desc:'₪2,200 על בילוי ביוני לעומת ₪1,400 בממוצע — עלייה 57%',badge:'שים לב',bc:'rgba(245,158,11,.15)',bt:'#f59e0b'},
-      {ic:'💡',title:'פוטנציאל חיסכון',desc:'הפחת 30% בבילוי → ₪7,920 נוספים בשנה',badge:'המלצה',bc:'rgba(109,102,232,.15)',bt:'#6d66e8'},
-    ].map(i=>`<div class="insight">
-      <div style="font-size:22px;flex-shrink:0">${i.ic}</div>
-      <div><div class="ins-title">${i.title}</div><div class="ins-desc">${i.desc}</div><span class="ins-badge" style="background:${i.bc};color:${i.bt}">${i.badge}</span></div>
-    </div>`).join('');
-  }
+      <button class="modal-save" style="width:100%;margin-top:8px" onclick="saveSettings()">שמור</button>
+    </div>
+
+    <div class="card pad" style="margin-bottom:12px">
+      <div style="font-size:13px;font-weight:700;margin-bottom:14px;color:var(--text2)">נתונים</div>
+      <div style="font-size:13px;color:var(--text2);margin-bottom:10px">${txns.length} עסקאות · ${incomes.length} הכנסות</div>
+      <button onclick="clearAll()" style="width:100%;background:rgba(225,112,85,.15);color:#e17055;border:none;border-radius:12px;padding:12px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit">מחק את כל הנתונים</button>
+    </div>
+
+    <div class="card pad">
+      <div style="font-size:13px;font-weight:700;margin-bottom:6px;color:var(--text2)">BOX3.0</div>
+      <div style="font-size:12px;color:var(--text3);line-height:1.6">אפליקציית ניהול משק בית<br>כל הנתונים נשמרים במכשיר שלך בלבד</div>
+    </div>
+  </div>`;
+}
+
+function saveSettings(){
+  settings.name=document.getElementById('s-name').value.trim();
+  save('settings',settings);
+  showToast('נשמר ✓');
+  buildDashboard();
+}
+
+function clearAll(){
+  if(!confirm('למחוק את כל הנתונים? פעולה זו לא ניתנת לביטול.'))return;
+  txns=[];incomes=[];
+  budgets=CATS.map(c=>({name:c.name,budget:0}));
+  save('txns',txns);save('incomes',incomes);save('budgets',budgets);
+  buildDashboard();buildSettings();
+  showToast('הנתונים נמחקו');
 }
 
 // ── INIT ──────────────────────────────────────────
 buildDashboard();
-buildExpenses();
-buildBudget();
-buildPension();
-buildReports();
 </script>
 </body>
 </html>
